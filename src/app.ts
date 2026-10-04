@@ -42,6 +42,11 @@ export function createApp() {
           return callback(null, true);
         }
 
+        // Allow all Vercel production and preview deployments (*.vercel.app)
+        if (origin.endsWith('.vercel.app')) {
+          return callback(null, true);
+        }
+
         // Match against allowed origin list
         if (allowedOrigins.includes(origin)) {
           return callback(null, true);
