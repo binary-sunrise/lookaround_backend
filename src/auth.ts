@@ -6,11 +6,33 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-const backendUrl = process.env.BETTER_AUTH_URL || `http://localhost:${process.env.PORT || 3000}`;
-const extraOrigins = process.env.ALLOWED_ORIGINS
+function sanitizeUrl(candidate?: string, fallback?: string): string | undefined {
+  if (!candidate || candidate.includes('<') || candidate.includes('>')) {
+    return fallback;
+  }
+  try {
+    return new URL(candidate).origin;
+  } catch {
+    return fallback;
+  }
+}
+
+// Auto-discover URL on Render or fall back safely
+const backendUrl =
+  sanitizeUrl(process.env.BETTER_AUTH_URL) ||
+  sanitizeUrl(process.env.RENDER_EXTERNAL_URL) ||
+  `http://localhost:${process.env.PORT || 3000}`;
+
+const frontendUrl =
+  sanitizeUrl(process.env.FRONTEND_URL) || 'http://localhost:5173';
+
+const rawExtraOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim()).filter(Boolean)
   : [];
+
+const extraOrigins = rawExtraOrigins
+  .map((origin) => sanitizeUrl(origin))
+  .filter((origin): origin is string => Boolean(origin));
 
 const trustedOrigins = Array.from(
   new Set([
@@ -27,23 +49,40 @@ const trustedOrigins = Array.from(
 // Configure optional OAuth providers if credentials are provided in env
 const socialProviders: Record<string, any> = {};
 
-if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+if (
+  process.env.GITHUB_CLIENT_ID &&
+  process.env.GITHUB_CLIENT_SECRET &&
+  !process.env.GITHUB_CLIENT_ID.includes('your_')
+) {
   socialProviders.github = {
     clientId: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
   };
 }
 
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+if (
+  process.env.GOOGLE_CLIENT_ID &&
+  process.env.GOOGLE_CLIENT_SECRET &&
+  !process.env.GOOGLE_CLIENT_ID.includes('your_')
+) {
   socialProviders.google = {
     clientId: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   };
 }
 
+const authSecret =
+  process.env.BETTER_AUTH_SECRET &&
+  !process.env.BETTER_AUTH_SECRET.includes('<') &&
+  process.env.BETTER_AUTH_SECRET.length >= 32
+    ? process.env.BETTER_AUTH_SECRET
+    : process.env.AUTH_SECRET && process.env.AUTH_SECRET.length >= 32
+      ? process.env.AUTH_SECRET
+      : 'lookaround_prod_auth_secret_kfri_2026_secure_key_32chars!';
+
 export const auth = betterAuth({
   baseURL: backendUrl,
-  secret: process.env.BETTER_AUTH_SECRET || process.env.AUTH_SECRET || 'lookaround-secret-development-key-32-chars-long-min!!',
+  secret: authSecret,
   trustedOrigins,
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
