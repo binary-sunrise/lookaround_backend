@@ -1,0 +1,44 @@
+[
+  {
+    "id": "user-alex",
+    "sub": "mock-user-ecologist-001",
+    "name": "Alex Citizen",
+    "given_name": "Alex",
+    "family_name": "Citizen",
+    "email": "alex.citizen@ala.org.au",
+    "email_verified": true,
+    "role": "Ecologist & Lead Researcher",
+    "roles": ["ROLE_USER", "ROLE_ADMIN", "ROLE_PROJECT_ADMIN"],
+    "custom:userid": "1001",
+    "avatar": "AC",
+    "organisation": "Atlas of Living Australia"
+  },
+  {
+    "id": "user-jane",
+    "sub": "mock-user-volunteer-002",
+    "name": "Jane Volunteer",
+    "given_name": "Jane",
+    "family_name": "Volunteer",
+    "email": "jane.volunteer@kfri.res.in",
+    "email_verified": true,
+    "role": "Field Volunteer Naturalist",
+    "roles": ["ROLE_USER"],
+    "custom:userid": "1002",
+    "avatar": "JV",
+    "organisation": "Kerala Forest Research Institute"
+  },
+  {
+    "id": "user-nair",
+    "sub": "mock-user-admin-003",
+    "name": "Dr. K. S. Nair",
+    "given_name": "Dr. K. S.",
+    "family_name": "Nair",
+    "email": "dr.nair@kfri.res.in",
+    "email_verified": true,
+    "role": "KFRI Senior Administrator",
+    "roles": ["ROLE_USER", "ROLE_ADMIN"],
+    "custom:userid": "1003",
+    "avatar": "KN",
+    "organisation": "Kerala Forest Research Institute"
+  }
+]

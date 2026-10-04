@@ -1,0 +1,1229 @@
+[
+  {
+    "projectId": "proj-gsb-01",
+    "name": "Great Southern BioBlitz 2026",
+    "aim": "To record and celebrate the rich biodiversity of the Southern Hemisphere in spring, engaging communities across Australia in ecological stewardship.",
+    "description": "The Great Southern BioBlitz (GSB) is an intensive biological census where citizens, naturalists, and scientists join together to photograph, record, and document every living organism in their area. From urban parks to pristine wilderness, participants catalog flora, fauna, fungi, and marine life.",
+    "difficulty": "Easy",
+    "startDate": "2023-01-01T00:00:00Z",
+    "endDate": "2028-12-31T23:59:59Z",
+    "plannedStartDate": "2023-01-01T00:00:00Z",
+    "plannedEndDate": "2028-12-31T23:59:59Z",
+    "isExternal": false,
+    "isSciStarter": false,
+    "isMERIT": false,
+    "projectType": "citizenScience",
+    "keywords": [
+      "bioblitz",
+      "biodiversity",
+      "census",
+      "citizen science",
+      "flora",
+      "fauna"
+    ],
+    "tags": [
+      "BioBlitz",
+      "Community Science",
+      "National Event"
+    ],
+    "organisationId": "org-acsa-01",
+    "organisationName": "Australian Citizen Science Association",
+    "scienceType": [
+      "Biodiversity",
+      "Ecology",
+      "Nature Watch"
+    ],
+    "ecoScienceType": [
+      "Terrestrial Ecology",
+      "Marine Biology",
+      "Taxonomy"
+    ],
+    "urlImage": "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=800&auto=format&fit=crop&q=80",
+    "fullSizeImageUrl": "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=1600&auto=format&fit=crop&q=80",
+    "urlWeb": "https://greatsouthernbioblitz.org",
+    "projectLogoImage": "https://biocollect.ala.org.au/static/images/acsa-logo.png",
+    "projectLogoImageCredit": "ACSA Media Library",
+    "contactName": "Dr. Sarah Mitchell",
+    "contactDetails": "sarah.mitchell@acsa.org.au",
+    "projectTask": "Search outdoors, take sharp photos of plants or animals, and upload sightings.",
+    "projectEquipment": "Smartphone or digital camera, notebook, hand lens (optional)",
+    "projectHowToParticipate": "1. Download the BioCollect PWA.\n2. Go outside in your local park, garden, or reserve.\n3. Take photos of any organism and submit your record with timestamp and GPS.",
+    "containsActivity": true,
+    "noCost": true,
+    "userIsProjectMember": true,
+    "hub": "acsa",
+    "coverage": {
+      "datum": "WGS84",
+      "fid": "cov-01",
+      "other": [],
+      "precision": "High",
+      "lga": [
+        "Greater Melbourne",
+        "City of Sydney",
+        "Brisbane"
+      ],
+      "bbox": "112.9,-43.7,153.6,-9.2",
+      "aream2": 7692024000000,
+      "decimalLatitude": -33.8688,
+      "decimalLongitude": 151.2093,
+      "pid": 1001,
+      "uncertainty": "10m",
+      "type": "Country",
+      "elect": [
+        "Sydney",
+        "Melbourne"
+      ],
+      "cmz": [
+        "Southeast Australia"
+      ],
+      "state": [
+        "NSW",
+        "VIC",
+        "QLD",
+        "WA",
+        "SA",
+        "TAS"
+      ],
+      "radius": 50000,
+      "mvg": "Temperate Forest",
+      "areaKmSq": 7692024,
+      "nrm": [
+        "Greater Sydney NRM",
+        "Port Phillip NRM"
+      ],
+      "locality": "Continental Australia",
+      "centre": [
+        "-33.8688",
+        "151.2093"
+      ],
+      "mvs": "Eucalypt Woodland",
+      "name": "Australia-wide BioBlitz Zone",
+      "imcra4_pb": [],
+      "ibra": [
+        "Sydney Basin",
+        "Victorian Midlands"
+      ],
+      "layerName": "National Coverage"
+    },
+    "links": [
+      {
+        "role": "twitter",
+        "url": "https://twitter.com/GSBioBlitz"
+      },
+      {
+        "role": "facebook",
+        "url": "https://facebook.com/greatsouthernbioblitz"
+      }
+    ],
+    "projectActivities": [
+      {
+        "id": "survey-001",
+        "projectActivityId": "pa-001",
+        "projectId": "proj-gsb-01",
+        "name": "Southern BioBlitz Species Census",
+        "description": "Rapid biodiversity assessment documenting flora, fauna, and fungi observations during the bioblitz.",
+        "status": "Active",
+        "startDate": "2023-01-01T00:00:00Z",
+        "endDate": "2028-12-31T23:59:59Z",
+        "published": true,
+        "publicAccess": true,
+        "surveySiteOption": "chooseOrDefineSites",
+        "selectFromSitesOnly": false,
+        "restrictRecordToSites": false,
+        "containsActivity": true,
+        "downloadFormTemplateUrl": "",
+        "publishProject": "Public",
+        "methodDocUrl": "https://biocollect.ala.org.au/methods/bioblitz-census.pdf",
+        "methodDocName": "BioBlitz Field Guide",
+        "methodUrl": "https://biocollect.ala.org.au/methods/standard-census",
+        "methodName": "Visual Encounter Survey",
+        "methodAbstract": "Time-constrained opportunistic visual searches for all organisms within designated spatial blocks.",
+        "methodType": "Opportunistic Observations",
+        "lastUpdated": "2026-03-15T09:30:00Z",
+        "dateCreated": "2023-01-10T12:00:00Z",
+        "spatialAccuracy": "GPS (< 10m)",
+        "temporalAccuracy": "Exact observation timestamp",
+        "nonTaxonomicAccuracy": "High (vetted by taxonomists)",
+        "speciesIdentification": "Expert verified with photographic evidence",
+        "allowAdditionalSurveySites": true,
+        "canEditAdminSelectedSites": false,
+        "isDataManagementPolicyDocumented": true,
+        "dataManagementPolicyDocument": "ALA Open Data License Policy",
+        "dataManagementPolicyURL": "https://www.ala.org.au/terms-of-use/",
+        "dataManagementPolicyDescription": "Creative Commons Attribution 4.0 International license applies to all submitted records.",
+        "dataSharingLicense": "CC-BY 4.0",
+        "dataQualityAssuranceDescription": "Automated geographic and taxonomic checks combined with crowd and curator verification.",
+        "dataQualityAssuranceMethods": [
+          "Expert review",
+          "Photographic audit",
+          "Coordinate bounding validation"
+        ],
+        "dataAccessExternalURL": "https://biocollect.ala.org.au",
+        "commentsAllowed": true,
+        "usageGuide": "Photograph organism in good lighting with clear dorsal/ventral views where applicable.",
+        "pActivityFormName": "BioBlitz Observation Form",
+        "version": 1,
+        "defaultZoomArea": "Australia",
+        "previewUrl": "https://biocollect.ala.org.au/pwa/preview/pa-001",
+        "selectedDocument": "bioblitz-protocol-v2.pdf",
+        "legalCustodianOrganisation": "Australian Citizen Science Association",
+        "excludeProjectSite": "none",
+        "addCreatedSiteToListOfSelectedSites": true,
+        "allowPolygons": true,
+        "allowLine": true,
+        "allowPoints": true,
+        "attribution": "Atlas of Living Australia & ACSA",
+        "stats": {
+          "activityCount": 38,
+          "activityLastUpdated": "2026-03-28T14:22:00Z",
+          "speciesRecorded": 24,
+          "publicAccess": true
+        },
+        "visibility": {
+          "embargoOption": "none",
+          "embargoForDays": 0,
+          "embargoUntil": "",
+          "alaAdminEnforcedEmbargo": false
+        },
+        "alert": {
+          "emailAddresses": [
+            "bioblitz-alerts@ala.org.au"
+          ],
+          "allSpecies": []
+        },
+        "mapLayersConfig": {
+          "baseLayers": [
+            {
+              "displayText": "OpenStreetMap",
+              "code": "OSM",
+              "isSelected": true
+            },
+            {
+              "displayText": "Satellite (Esri)",
+              "code": "ESRI_SAT",
+              "isSelected": false
+            }
+          ],
+          "overlays": []
+        },
+        "speciesFields": [
+          {
+            "dataFieldName": "individualCount",
+            "output": "individualCount",
+            "context": "count",
+            "label": "Number of Individuals",
+            "config": {
+              "type": "number",
+              "scientificNameField": "scientificName",
+              "commonNameField": "commonName"
+            }
+          }
+        ]
+      },
+      {
+        "id": "survey-002",
+        "projectActivityId": "pa-002",
+        "projectId": "proj-gsb-01",
+        "name": "Nocturnal Pollinator & Moth Transect",
+        "description": "Night light-sheet surveys monitoring nocturnal moths and insect pollinators.",
+        "status": "Active",
+        "startDate": "2023-02-01T00:00:00Z",
+        "endDate": "2028-12-31T23:59:59Z",
+        "published": true,
+        "publicAccess": true,
+        "surveySiteOption": "chooseOrDefineSites",
+        "selectFromSitesOnly": false,
+        "restrictRecordToSites": false,
+        "containsActivity": true,
+        "downloadFormTemplateUrl": "",
+        "publishProject": "Public",
+        "methodDocUrl": "https://biocollect.ala.org.au/methods/light-sheet.pdf",
+        "methodDocName": "Light Trapping Protocol",
+        "methodUrl": "https://biocollect.ala.org.au/methods/light-sheet",
+        "methodName": "Light Sheet Trap",
+        "methodAbstract": "UV light sheet placed in canopy clearing for 120 minutes post-sunset.",
+        "methodType": "Trapping / Attraction",
+        "lastUpdated": "2026-02-10T16:00:00Z",
+        "dateCreated": "2023-02-01T08:00:00Z",
+        "spatialAccuracy": "GPS (< 5m)",
+        "temporalAccuracy": "Exact time",
+        "nonTaxonomicAccuracy": "High",
+        "speciesIdentification": "Curator verified via macroscopic photos",
+        "allowAdditionalSurveySites": true,
+        "canEditAdminSelectedSites": false,
+        "isDataManagementPolicyDocumented": true,
+        "dataManagementPolicyDocument": "ALA Open Data Policy",
+        "dataManagementPolicyURL": "https://www.ala.org.au/terms-of-use/",
+        "dataManagementPolicyDescription": "Open access under CC-BY 4.0 license.",
+        "dataSharingLicense": "CC-BY 4.0",
+        "dataQualityAssuranceDescription": "Identifications verified by Australian National Insect Collection specialists.",
+        "dataQualityAssuranceMethods": [
+          "ANIC verification",
+          "High-res macro photography"
+        ],
+        "dataAccessExternalURL": "https://biocollect.ala.org.au",
+        "commentsAllowed": true,
+        "usageGuide": "Record temperature, wind speed, and lunar phase alongside moth counts.",
+        "pActivityFormName": "Nocturnal Pollinators Form",
+        "version": 1,
+        "defaultZoomArea": "Australia",
+        "previewUrl": "https://biocollect.ala.org.au/pwa/preview/pa-002",
+        "selectedDocument": "light-trapping-guide.pdf",
+        "legalCustodianOrganisation": "Australian Citizen Science Association",
+        "excludeProjectSite": "none",
+        "addCreatedSiteToListOfSelectedSites": true,
+        "allowPolygons": false,
+        "allowLine": false,
+        "allowPoints": true,
+        "attribution": "Atlas of Living Australia",
+        "stats": {
+          "activityCount": 16,
+          "activityLastUpdated": "2026-03-20T21:10:00Z",
+          "speciesRecorded": 42,
+          "publicAccess": true
+        },
+        "visibility": {
+          "embargoOption": "none",
+          "embargoForDays": 0,
+          "embargoUntil": "",
+          "alaAdminEnforcedEmbargo": false
+        },
+        "alert": {
+          "emailAddresses": [],
+          "allSpecies": []
+        },
+        "mapLayersConfig": {
+          "baseLayers": [
+            {
+              "displayText": "OpenStreetMap",
+              "code": "OSM",
+              "isSelected": true
+            }
+          ],
+          "overlays": []
+        },
+        "speciesFields": []
+      }
+    ]
+  },
+  {
+    "projectId": "proj-abc-02",
+    "name": "Aussie Backyard Bird Count",
+    "aim": "Monitor trends in Australian bird populations and encourage Australians of all ages to observe and value their local bird life.",
+    "description": "Each October, hundreds of thousands of bird lovers head into their gardens, local parks, and schoolyards for 20 minutes to count birds. The data gathered provides a crucial snapshot of common and threatened birds across the continent.",
+    "difficulty": "Easy",
+    "startDate": "2023-01-01T00:00:00Z",
+    "endDate": "2028-12-31T23:59:59Z",
+    "plannedStartDate": "2023-01-01T00:00:00Z",
+    "plannedEndDate": "2028-12-31T23:59:59Z",
+    "isExternal": false,
+    "isSciStarter": false,
+    "isMERIT": false,
+    "projectType": "citizenScience",
+    "keywords": [
+      "birds",
+      "ornithology",
+      "avifauna",
+      "backyard",
+      "urban ecology"
+    ],
+    "tags": [
+      "Bird Watching",
+      "Urban Biodiversity",
+      "Annual Count"
+    ],
+    "organisationId": "org-birdlife-02",
+    "organisationName": "BirdLife Australia",
+    "scienceType": [
+      "Ornithology",
+      "Urban Ecology",
+      "Behavioral Ecology"
+    ],
+    "ecoScienceType": [
+      "Avian Population Dynamics",
+      "Habitat Utilization"
+    ],
+    "urlImage": "https://images.unsplash.com/photo-1522926197415-e6a0a324f8d5?w=800&auto=format&fit=crop&q=80",
+    "fullSizeImageUrl": "https://images.unsplash.com/photo-1522926197415-e6a0a324f8d5?w=1600&auto=format&fit=crop&q=80",
+    "urlWeb": "https://aussiebirdcount.org.au",
+    "projectLogoImage": "https://biocollect.ala.org.au/static/images/ala-logo.png",
+    "projectLogoImageCredit": "BirdLife Australia",
+    "contactName": "Sean Dooley",
+    "contactDetails": "info@birdlife.org.au",
+    "projectTask": "Spend 20 minutes in your garden or local park and record all birds seen and heard.",
+    "projectEquipment": "Binoculars (helpful but not essential), Aussie Bird Count App or BioCollect",
+    "projectHowToParticipate": "Find a comfortable spot, sit for 20 minutes, count the birds you see and note individual numbers.",
+    "containsActivity": true,
+    "noCost": true,
+    "userIsProjectMember": true,
+    "hub": "acsa",
+    "coverage": {
+      "datum": "WGS84",
+      "fid": "cov-02",
+      "other": [],
+      "precision": "High",
+      "lga": [
+        "All Australian LGAs"
+      ],
+      "bbox": "112.9,-43.7,153.6,-9.2",
+      "aream2": 7692024000000,
+      "decimalLatitude": -37.8136,
+      "decimalLongitude": 144.9631,
+      "pid": 1002,
+      "uncertainty": "15m",
+      "type": "Country",
+      "elect": [
+        "Melbourne",
+        "Kooyong"
+      ],
+      "cmz": [
+        "Southern Australia"
+      ],
+      "state": [
+        "VIC",
+        "NSW",
+        "TAS",
+        "SA",
+        "WA",
+        "QLD"
+      ],
+      "radius": 60000,
+      "mvg": "Urban and Woodland",
+      "areaKmSq": 7692024,
+      "nrm": [
+        "Port Phillip and Westernport"
+      ],
+      "locality": "Australia-wide",
+      "centre": [
+        "-37.8136",
+        "144.9631"
+      ],
+      "mvs": "Urban Parkland",
+      "name": "Continental Australia Birds",
+      "imcra4_pb": [],
+      "ibra": [
+        "Victorian Midlands",
+        "South East Coastal Plain"
+      ],
+      "layerName": "National Avian"
+    },
+    "links": [
+      {
+        "role": "twitter",
+        "url": "https://twitter.com/BirdlifeAus"
+      },
+      {
+        "role": "instagram",
+        "url": "https://instagram.com/birdlifeoz"
+      }
+    ],
+    "projectActivities": [
+      {
+        "id": "survey-003",
+        "projectActivityId": "pa-003",
+        "projectId": "proj-abc-02",
+        "name": "20-Minute Aussie Backyard Bird Count",
+        "description": "Standardized 20-minute stationary count of bird species and abundance in backyards and parks.",
+        "status": "Active",
+        "startDate": "2023-01-01T00:00:00Z",
+        "endDate": "2028-12-31T23:59:59Z",
+        "published": true,
+        "publicAccess": true,
+        "surveySiteOption": "chooseOrDefineSites",
+        "selectFromSitesOnly": false,
+        "restrictRecordToSites": false,
+        "containsActivity": true,
+        "downloadFormTemplateUrl": "",
+        "publishProject": "Public",
+        "methodDocUrl": "https://biocollect.ala.org.au/methods/birdlife-20min.pdf",
+        "methodDocName": "BirdLife 20-minute protocol",
+        "methodUrl": "https://biocollect.ala.org.au/methods/point-count",
+        "methodName": "20-minute Point Count",
+        "methodAbstract": "Stationary observer records all birds seen or heard within a 50m radius over 20 minutes.",
+        "methodType": "Standardized Point Count",
+        "lastUpdated": "2026-03-25T11:00:00Z",
+        "dateCreated": "2023-01-05T10:00:00Z",
+        "spatialAccuracy": "GPS (< 15m)",
+        "temporalAccuracy": "Standard 20-minute observation window",
+        "nonTaxonomicAccuracy": "High",
+        "speciesIdentification": "Observer identification with audio/photo option",
+        "allowAdditionalSurveySites": true,
+        "canEditAdminSelectedSites": false,
+        "isDataManagementPolicyDocumented": true,
+        "dataManagementPolicyDocument": "BirdLife Australia Data License",
+        "dataManagementPolicyURL": "https://birdlife.org.au",
+        "dataManagementPolicyDescription": "Shared with ALA and Global Biodiversity Information Facility (GBIF).",
+        "dataSharingLicense": "CC-BY-NC 4.0",
+        "dataQualityAssuranceDescription": "Automated range checks and statistical outliers flagged for expert review.",
+        "dataQualityAssuranceMethods": [
+          "Outlier flagging",
+          "Range map validation"
+        ],
+        "dataAccessExternalURL": "https://aussiebirdcount.org.au",
+        "commentsAllowed": true,
+        "usageGuide": "Spend exactly 20 minutes observing from one fixed location.",
+        "pActivityFormName": "Aussie Bird Count Form",
+        "version": 2,
+        "defaultZoomArea": "Australia",
+        "previewUrl": "https://biocollect.ala.org.au/pwa/preview/pa-003",
+        "selectedDocument": "aussie-bird-guide.pdf",
+        "legalCustodianOrganisation": "BirdLife Australia",
+        "excludeProjectSite": "none",
+        "addCreatedSiteToListOfSelectedSites": true,
+        "allowPolygons": false,
+        "allowLine": false,
+        "allowPoints": true,
+        "attribution": "BirdLife Australia & ALA",
+        "stats": {
+          "activityCount": 142,
+          "activityLastUpdated": "2026-03-29T17:45:00Z",
+          "speciesRecorded": 86,
+          "publicAccess": true
+        },
+        "visibility": {
+          "embargoOption": "none",
+          "embargoForDays": 0,
+          "embargoUntil": "",
+          "alaAdminEnforcedEmbargo": false
+        },
+        "alert": {
+          "emailAddresses": [],
+          "allSpecies": []
+        },
+        "mapLayersConfig": {
+          "baseLayers": [
+            {
+              "displayText": "OpenStreetMap",
+              "code": "OSM",
+              "isSelected": true
+            }
+          ],
+          "overlays": []
+        },
+        "speciesFields": [
+          {
+            "dataFieldName": "individualCount",
+            "output": "individualCount",
+            "context": "count",
+            "label": "Number of Birds",
+            "config": {
+              "type": "number",
+              "scientificNameField": "scientificName",
+              "commonNameField": "commonName"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "projectId": "proj-kt-03",
+    "name": "Koala Watch & Habitat Health Monitor",
+    "aim": "Track koala sightings, population recovery, disease signs, and food tree vitality in eastern coastal regions.",
+    "description": "Koala populations in eastern Australia face significant pressures from habitat fragmentation, disease, and urban expansion. This community science initiative allows bushwalkers, landholders, and local communities to log koala encounters and assess canopy foliage condition.",
+    "difficulty": "Medium",
+    "startDate": "2023-01-01T00:00:00Z",
+    "endDate": "2028-12-31T23:59:59Z",
+    "plannedStartDate": "2023-01-01T00:00:00Z",
+    "plannedEndDate": "2028-12-31T23:59:59Z",
+    "isExternal": false,
+    "isSciStarter": false,
+    "isMERIT": false,
+    "projectType": "citizenScience",
+    "keywords": [
+      "koala",
+      "marsupial",
+      "eucalyptus",
+      "endangered",
+      "wildlife monitoring"
+    ],
+    "tags": [
+      "Endangered Species",
+      "Wildlife Rescue",
+      "Habitat Conservation"
+    ],
+    "organisationId": "org-qld-03",
+    "organisationName": "Queensland Wildlife Conservation Authority",
+    "scienceType": [
+      "Mammalogy",
+      "Conservation Biology",
+      "Wildlife Health"
+    ],
+    "ecoScienceType": [
+      "Marsupial Ecology",
+      "Forest Fragmentation"
+    ],
+    "urlImage": "https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=800&auto=format&fit=crop&q=80",
+    "fullSizeImageUrl": "https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1600&auto=format&fit=crop&q=80",
+    "urlWeb": "https://biocollect.ala.org.au/koala-watch",
+    "projectLogoImage": "https://biocollect.ala.org.au/static/images/ala-logo.png",
+    "projectLogoImageCredit": "Queensland Wildlife",
+    "contactName": "Marcus Bell",
+    "contactDetails": "koala.monitoring@wildlife.qld.gov.au",
+    "projectTask": "Search eucalyptus canopies, log location, and photograph signs of healthy or sick koalas.",
+    "projectEquipment": "Camera with telephoto lens, GPS phone",
+    "projectHowToParticipate": "Walk quietly along forested tracks, check fork branches of eucalyptus trees, log sighting immediately.",
+    "containsActivity": true,
+    "noCost": true,
+    "userIsProjectMember": false,
+    "hub": "acsa",
+    "coverage": {
+      "datum": "WGS84",
+      "fid": "cov-03",
+      "other": [],
+      "precision": "High",
+      "lga": [
+        "Sunshine Coast",
+        "Moreton Bay",
+        "Northern Rivers"
+      ],
+      "bbox": "151.5,-30.5,153.8,-25.5",
+      "aream2": 150000000000,
+      "decimalLatitude": -27.4698,
+      "decimalLongitude": 153.0251,
+      "pid": 1003,
+      "uncertainty": "5m",
+      "type": "Region",
+      "elect": [
+        "Brisbane",
+        "Lilley"
+      ],
+      "cmz": [
+        "Coastal Subtropics"
+      ],
+      "state": [
+        "QLD",
+        "NSW"
+      ],
+      "radius": 30000,
+      "mvg": "Eucalypt Tall Open Forest",
+      "areaKmSq": 150000,
+      "nrm": [
+        "SEQ Catchments"
+      ],
+      "locality": "Eastern Seaboard",
+      "centre": [
+        "-27.4698",
+        "153.0251"
+      ],
+      "mvs": "Dry Sclerophyll Forest",
+      "name": "East Coast Koala Belt",
+      "imcra4_pb": [],
+      "ibra": [
+        "South Eastern Queensland"
+      ],
+      "layerName": "Koala Priority Habitat"
+    },
+    "links": [
+      {
+        "role": "facebook",
+        "url": "https://facebook.com/koalawatchaustralia"
+      }
+    ],
+    "projectActivities": [
+      {
+        "id": "survey-004",
+        "projectActivityId": "pa-004",
+        "projectId": "proj-kt-03",
+        "name": "Koala Sighting & Tree Health Survey",
+        "description": "Record koala sightings, vocalizations, tree species, health status, and presence of joey.",
+        "status": "Active",
+        "startDate": "2023-01-01T00:00:00Z",
+        "endDate": "2028-12-31T23:59:59Z",
+        "published": true,
+        "publicAccess": true,
+        "surveySiteOption": "chooseOrDefineSites",
+        "selectFromSitesOnly": false,
+        "restrictRecordToSites": false,
+        "containsActivity": true,
+        "downloadFormTemplateUrl": "",
+        "publishProject": "Public",
+        "methodDocUrl": "https://biocollect.ala.org.au/methods/koala-monitoring.pdf",
+        "methodDocName": "Koala Monitoring Guidelines",
+        "methodUrl": "https://biocollect.ala.org.au/methods/koala-health",
+        "methodName": "Visual Tree Scan",
+        "methodAbstract": "Scanning eucalyptus trees from ground level, noting species, tree height, and signs of chlamydia or dog attack.",
+        "methodType": "Targeted Species Survey",
+        "lastUpdated": "2026-03-18T10:15:00Z",
+        "dateCreated": "2023-03-12T07:30:00Z",
+        "spatialAccuracy": "GPS (< 5m)",
+        "temporalAccuracy": "Timestamped",
+        "nonTaxonomicAccuracy": "High",
+        "speciesIdentification": "Distinctive species verified by photo",
+        "allowAdditionalSurveySites": true,
+        "canEditAdminSelectedSites": false,
+        "isDataManagementPolicyDocumented": true,
+        "dataManagementPolicyDocument": "Endangered Species Data Protocol",
+        "dataManagementPolicyURL": "https://biocollect.ala.org.au/koala/policy",
+        "dataManagementPolicyDescription": "Locations slightly fuzzed for public download to protect animals from disturbance.",
+        "dataSharingLicense": "CC-BY 4.0",
+        "dataQualityAssuranceDescription": "Wildlife veterinarian review of reported signs of disease.",
+        "dataQualityAssuranceMethods": [
+          "Veterinary review",
+          "Photo verification"
+        ],
+        "dataAccessExternalURL": "https://biocollect.ala.org.au",
+        "commentsAllowed": true,
+        "usageGuide": "Do not disturb animal. Maintain at least 10 meters distance.",
+        "pActivityFormName": "Koala Health & Sighting Form",
+        "version": 1,
+        "defaultZoomArea": "Australia",
+        "previewUrl": "https://biocollect.ala.org.au/pwa/preview/pa-004",
+        "selectedDocument": "koala-field-manual.pdf",
+        "legalCustodianOrganisation": "Queensland Wildlife Conservation Authority",
+        "excludeProjectSite": "none",
+        "addCreatedSiteToListOfSelectedSites": true,
+        "allowPolygons": false,
+        "allowLine": false,
+        "allowPoints": true,
+        "attribution": "Queensland Wildlife & ALA",
+        "stats": {
+          "activityCount": 27,
+          "activityLastUpdated": "2026-03-27T16:40:00Z",
+          "speciesRecorded": 3,
+          "publicAccess": true
+        },
+        "visibility": {
+          "embargoOption": "none",
+          "embargoForDays": 0,
+          "embargoUntil": "",
+          "alaAdminEnforcedEmbargo": false
+        },
+        "alert": {
+          "emailAddresses": [
+            "koala-rescue@ala.org.au"
+          ],
+          "allSpecies": []
+        },
+        "mapLayersConfig": {
+          "baseLayers": [
+            {
+              "displayText": "OpenStreetMap",
+              "code": "OSM",
+              "isSelected": true
+            }
+          ],
+          "overlays": []
+        },
+        "speciesFields": []
+      }
+    ]
+  },
+  {
+    "projectId": "proj-kfri-01",
+    "name": "Western Ghats Biodiversity & Shola Forest Inventory",
+    "aim": "Document high-altitude plant endemism, endangered fauna, and microclimate indicators across the Nilgiri and Anamalai Shola complexes.",
+    "description": "The Western Ghats of India represents one of the world's eight biodiversity hotspots. Kerala Forest Research Institute (KFRI) leads this long-term community and field research monitoring platform to map evergreen forest canopy regeneration, rare orchids, medicinal flora, and endemic amphibian species.",
+    "difficulty": "Medium",
+    "startDate": "2023-01-01T00:00:00Z",
+    "endDate": "2028-12-31T23:59:59Z",
+    "plannedStartDate": "2023-01-01T00:00:00Z",
+    "plannedEndDate": "2028-12-31T23:59:59Z",
+    "isExternal": false,
+    "isSciStarter": false,
+    "isMERIT": false,
+    "projectType": "citizenScience",
+    "keywords": [
+      "Western Ghats",
+      "KFRI",
+      "Shola",
+      "Endemic Flora",
+      "Amphibians",
+      "Hotspot"
+    ],
+    "tags": [
+      "KFRI",
+      "Biodiversity Hotspot",
+      "Tropical Forest",
+      "Endemic Species"
+    ],
+    "organisationId": "org-kfri-01",
+    "organisationName": "Kerala Forest Research Institute (KFRI)",
+    "scienceType": [
+      "Botany",
+      "Forestry",
+      "Conservation Ecology",
+      "Herpetology"
+    ],
+    "ecoScienceType": [
+      "Tropical Montane Ecology",
+      "Plant Phenology",
+      "Biogeography"
+    ],
+    "urlImage": "https://images.unsplash.com/photo-1511497584788-87676104235f?w=800&auto=format&fit=crop&q=80",
+    "fullSizeImageUrl": "https://images.unsplash.com/photo-1511497584788-87676104235f?w=1600&auto=format&fit=crop&q=80",
+    "urlWeb": "https://kfri.res.in/programmes/western-ghats-monitoring",
+    "projectLogoImage": "https://biocollect.ala.org.au/static/images/kfri-logo.png",
+    "projectLogoImageCredit": "KFRI Peechi Media Cell",
+    "contactName": "Dr. K. S. Nair",
+    "contactDetails": "director@kfri.res.in",
+    "projectTask": "Conduct botanical quadrat sampling and log observation points in assigned forest divisions.",
+    "projectEquipment": "GPS navigator, measuring tape, plant press, field camera",
+    "projectHowToParticipate": "Field volunteers coordinate with forest beats, photograph plants, record GPS coordinates and habitat strata.",
+    "containsActivity": true,
+    "noCost": true,
+    "userIsProjectMember": true,
+    "hub": "kfri",
+    "coverage": {
+      "datum": "WGS84",
+      "fid": "cov-kfri-01",
+      "other": [],
+      "precision": "High",
+      "lga": [
+        "Thrissur",
+        "Palakkad",
+        "Wayanad",
+        "Idukki"
+      ],
+      "bbox": "75.8,9.5,77.5,11.8",
+      "aream2": 38000000000,
+      "decimalLatitude": 10.5276,
+      "decimalLongitude": 76.2144,
+      "pid": 2001,
+      "uncertainty": "2m",
+      "type": "State Region",
+      "elect": [
+        "Thrissur",
+        "Chalakudy"
+      ],
+      "cmz": [
+        "Western Ghats Montane"
+      ],
+      "state": [
+        "Kerala"
+      ],
+      "radius": 45000,
+      "mvg": "Tropical Moist Evergreen and Shola",
+      "areaKmSq": 38000,
+      "nrm": [
+        "Central Kerala Forest Circle"
+      ],
+      "locality": "Peechi-Vazhani Wildlife Sanctuary & Nilgiris",
+      "centre": [
+        "10.5276",
+        "76.2144"
+      ],
+      "mvs": "Southern Montane Wet Temperate Forest",
+      "name": "Western Ghats Central Corridor",
+      "imcra4_pb": [],
+      "ibra": [
+        "Malabar Coast",
+        "Western Ghats"
+      ],
+      "layerName": "KFRI Research Reserve"
+    },
+    "links": [
+      {
+        "role": "rssFeed",
+        "url": "https://kfri.res.in/feed"
+      }
+    ],
+    "projectActivities": [
+      {
+        "id": "survey-005",
+        "projectActivityId": "pa-005",
+        "projectId": "proj-kfri-01",
+        "name": "Western Ghats Endemic Flora & Shola Survey",
+        "description": "Comprehensive botanical documentation of rare, endangered, and threatened plants in Shola-grassland ecosystems.",
+        "status": "Active",
+        "startDate": "2023-01-01T00:00:00Z",
+        "endDate": "2028-12-31T23:59:59Z",
+        "published": true,
+        "publicAccess": true,
+        "surveySiteOption": "chooseOrDefineSites",
+        "selectFromSitesOnly": false,
+        "restrictRecordToSites": false,
+        "containsActivity": true,
+        "downloadFormTemplateUrl": "",
+        "publishProject": "Public",
+        "methodDocUrl": "https://kfri.res.in/protocols/shola-flora.pdf",
+        "methodDocName": "KFRI Shola Botanical Protocol",
+        "methodUrl": "https://kfri.res.in/methods/transect-quadrat",
+        "methodName": "10x10m Forest Quadrat Sampling",
+        "methodAbstract": "Botanical inventory recording DBH, canopy cover, flowering phenology, and soil moisture within marked quadrats.",
+        "methodType": "Permanent Plot Sampling",
+        "lastUpdated": "2026-03-22T08:00:00Z",
+        "dateCreated": "2023-04-01T06:00:00Z",
+        "spatialAccuracy": "Differential GPS (< 1m)",
+        "temporalAccuracy": "Standard recording schedule",
+        "nonTaxonomicAccuracy": "Scientific grade",
+        "speciesIdentification": "Botanical voucher specimens and macro photography",
+        "allowAdditionalSurveySites": true,
+        "canEditAdminSelectedSites": true,
+        "isDataManagementPolicyDocumented": true,
+        "dataManagementPolicyDocument": "KFRI Data Governance Charter",
+        "dataManagementPolicyURL": "https://kfri.res.in/data-policy",
+        "dataManagementPolicyDescription": "Published open-access in accordance with the National Biodiversity Authority of India guidelines.",
+        "dataSharingLicense": "CC-BY 4.0",
+        "dataQualityAssuranceDescription": "Cross-referenced with KFRI Herbarium (KFRI) holdings.",
+        "dataQualityAssuranceMethods": [
+          "Herbarium voucher match",
+          "Botanist curator sign-off"
+        ],
+        "dataAccessExternalURL": "https://kfri.res.in",
+        "commentsAllowed": true,
+        "usageGuide": "Collect high resolution images of leaves, floral organs, bark, and habit.",
+        "pActivityFormName": "KFRI Botanical Quadrat Record",
+        "version": 3,
+        "defaultZoomArea": "Kerala, India",
+        "previewUrl": "https://kfri.res.in/pwa/preview/pa-005",
+        "selectedDocument": "western-ghats-flora.pdf",
+        "legalCustodianOrganisation": "Kerala Forest Research Institute",
+        "excludeProjectSite": "none",
+        "addCreatedSiteToListOfSelectedSites": true,
+        "allowPolygons": true,
+        "allowLine": false,
+        "allowPoints": true,
+        "attribution": "Kerala Forest Research Institute (KFRI)",
+        "stats": {
+          "activityCount": 54,
+          "activityLastUpdated": "2026-03-29T10:15:00Z",
+          "speciesRecorded": 98,
+          "publicAccess": true
+        },
+        "visibility": {
+          "embargoOption": "none",
+          "embargoForDays": 0,
+          "embargoUntil": "",
+          "alaAdminEnforcedEmbargo": false
+        },
+        "alert": {
+          "emailAddresses": [
+            "botany@kfri.res.in"
+          ],
+          "allSpecies": []
+        },
+        "mapLayersConfig": {
+          "baseLayers": [
+            {
+              "displayText": "OpenStreetMap",
+              "code": "OSM",
+              "isSelected": true
+            }
+          ],
+          "overlays": []
+        },
+        "speciesFields": [
+          {
+            "dataFieldName": "individualCount",
+            "output": "individualCount",
+            "context": "count",
+            "label": "Stem Count",
+            "config": {
+              "type": "number",
+              "scientificNameField": "scientificName",
+              "commonNameField": "commonName"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "projectId": "proj-kfri-02",
+    "name": "KFRI Forest Health & Sentinel Pest Surveillance",
+    "aim": "Early detection and surveillance of forest insect pests, invasive plant pathogens, and teak skeletonizer outbreaks.",
+    "description": "Forest health in tropical plantations and reserve forests requires vigilant sentinel monitoring. Forest rangers, tribals, student interns, and researchers report insect defoliator attacks, wood-borer symptoms, and fungal cankers to assist KFRI's Forest Entomology and Pathology wings in rapid biological management.",
+    "difficulty": "Easy",
+    "startDate": "2023-01-01T00:00:00Z",
+    "endDate": "2028-12-31T23:59:59Z",
+    "plannedStartDate": "2023-01-01T00:00:00Z",
+    "plannedEndDate": "2028-12-31T23:59:59Z",
+    "isExternal": false,
+    "isSciStarter": false,
+    "isMERIT": false,
+    "projectType": "citizenScience",
+    "keywords": [
+      "pest",
+      "entomology",
+      "teak defoliator",
+      "forest pathology",
+      "bamboo borer",
+      "KFRI"
+    ],
+    "tags": [
+      "KFRI",
+      "Forest Protection",
+      "Entomology",
+      "Pest Management"
+    ],
+    "organisationId": "org-kfri-01",
+    "organisationName": "Kerala Forest Research Institute (KFRI)",
+    "scienceType": [
+      "Entomology",
+      "Plant Pathology",
+      "Silviculture"
+    ],
+    "ecoScienceType": [
+      "Forest Protection",
+      "Ecological Impact Analysis"
+    ],
+    "urlImage": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=800&auto=format&fit=crop&q=80",
+    "fullSizeImageUrl": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=1600&auto=format&fit=crop&q=80",
+    "urlWeb": "https://kfri.res.in/forest-protection",
+    "projectLogoImage": "https://biocollect.ala.org.au/static/images/kfri-logo.png",
+    "projectLogoImageCredit": "KFRI Media Unit",
+    "contactName": "Dr. T. V. Sajeev",
+    "contactDetails": "entomology@kfri.res.in",
+    "projectTask": "Spot damaged foliage or wood bore holes, take photo, and record infestation severity.",
+    "projectEquipment": "Smartphone with camera",
+    "projectHowToParticipate": "Photograph infested leaves or stems, submit coordinates and estimate percentage of affected foliage.",
+    "containsActivity": true,
+    "noCost": true,
+    "userIsProjectMember": true,
+    "hub": "kfri",
+    "coverage": {
+      "datum": "WGS84",
+      "fid": "cov-kfri-02",
+      "other": [],
+      "precision": "High",
+      "lga": [
+        "Nilambur",
+        "Kozhikode",
+        "Wayanad",
+        "Ernakulam"
+      ],
+      "bbox": "75.7,10.0,76.9,11.9",
+      "aream2": 22000000000,
+      "decimalLatitude": 11.2778,
+      "decimalLongitude": 76.2257,
+      "pid": 2002,
+      "uncertainty": "10m",
+      "type": "Forest Circle",
+      "elect": [
+        "Nilambur",
+        "Wayanad"
+      ],
+      "cmz": [
+        "Nilambur Valley Teak Reserves"
+      ],
+      "state": [
+        "Kerala"
+      ],
+      "radius": 40000,
+      "mvg": "Tropical Moist Deciduous and Teak Plantation",
+      "areaKmSq": 22000,
+      "nrm": [
+        "Nilambur Forest Division"
+      ],
+      "locality": "Nilambur & Peechi Forest Divisions",
+      "centre": [
+        "11.2778",
+        "76.2257"
+      ],
+      "mvs": "Teak Forest & Bamboo Breaks",
+      "name": "Kerala Forest Health Monitoring Grid",
+      "imcra4_pb": [],
+      "ibra": [
+        "Western Ghats"
+      ],
+      "layerName": "Forest Sentinel Network"
+    },
+    "links": [
+      {
+        "role": "twitter",
+        "url": "https://twitter.com/kfriindia"
+      }
+    ],
+    "projectActivities": [
+      {
+        "id": "survey-006",
+        "projectActivityId": "pa-006",
+        "projectId": "proj-kfri-02",
+        "name": "Bamboo Borer & Teak Defoliator Sentinel Watch",
+        "description": "Citizen and community forest guard reporting of forest pest outbreaks and leaf blight incidence.",
+        "status": "Active",
+        "startDate": "2023-01-01T00:00:00Z",
+        "endDate": "2028-12-31T23:59:59Z",
+        "published": true,
+        "publicAccess": true,
+        "surveySiteOption": "chooseOrDefineSites",
+        "selectFromSitesOnly": false,
+        "restrictRecordToSites": false,
+        "containsActivity": true,
+        "downloadFormTemplateUrl": "",
+        "publishProject": "Public",
+        "methodDocUrl": "https://kfri.res.in/protocols/pest-watch.pdf",
+        "methodDocName": "Forest Entomology Sentinel Guide",
+        "methodUrl": "https://kfri.res.in/methods/pest-scoring",
+        "methodName": "Defoliation & Infestation Index",
+        "methodAbstract": "Scoring 0-4 defoliation severity and bore-hole density on 10 sampled trees per hectare.",
+        "methodType": "Damage Assessment",
+        "lastUpdated": "2026-03-10T14:00:00Z",
+        "dateCreated": "2023-05-15T09:00:00Z",
+        "spatialAccuracy": "GPS (< 10m)",
+        "temporalAccuracy": "Standard weekly/monthly survey",
+        "nonTaxonomicAccuracy": "High",
+        "speciesIdentification": "Entomology team validation",
+        "allowAdditionalSurveySites": true,
+        "canEditAdminSelectedSites": false,
+        "isDataManagementPolicyDocumented": true,
+        "dataManagementPolicyDocument": "Forest Health Data Sharing Protocol",
+        "dataManagementPolicyURL": "https://kfri.res.in",
+        "dataManagementPolicyDescription": "Used for early warning pest alert system across South Indian forest circles.",
+        "dataSharingLicense": "CC-BY 4.0",
+        "dataQualityAssuranceDescription": "Entomologists at KFRI Peechi station review severe infestation flags within 48h.",
+        "dataQualityAssuranceMethods": [
+          "Rapid entomologist triage",
+          "Image-based leaf damage analysis"
+        ],
+        "dataAccessExternalURL": "https://kfri.res.in",
+        "commentsAllowed": true,
+        "usageGuide": "Take close-ups of larvae/beetles, sawdust frass at base, and canopy foliage.",
+        "pActivityFormName": "Pest & Defoliation Incident Report",
+        "version": 1,
+        "defaultZoomArea": "Kerala, India",
+        "previewUrl": "https://kfri.res.in/pwa/preview/pa-006",
+        "selectedDocument": "forest-pest-guide.pdf",
+        "legalCustodianOrganisation": "Kerala Forest Research Institute",
+        "excludeProjectSite": "none",
+        "addCreatedSiteToListOfSelectedSites": true,
+        "allowPolygons": false,
+        "allowLine": false,
+        "allowPoints": true,
+        "attribution": "KFRI Entomology Department",
+        "stats": {
+          "activityCount": 19,
+          "activityLastUpdated": "2026-03-24T12:30:00Z",
+          "speciesRecorded": 11,
+          "publicAccess": true
+        },
+        "visibility": {
+          "embargoOption": "none",
+          "embargoForDays": 0,
+          "embargoUntil": "",
+          "alaAdminEnforcedEmbargo": false
+        },
+        "alert": {
+          "emailAddresses": [
+            "entomology-alerts@kfri.res.in"
+          ],
+          "allSpecies": []
+        },
+        "mapLayersConfig": {
+          "baseLayers": [
+            {
+              "displayText": "OpenStreetMap",
+              "code": "OSM",
+              "isSelected": true
+            }
+          ],
+          "overlays": []
+        },
+        "speciesFields": []
+      }
+    ]
+  },
+  {
+    "projectId": "proj-ala-01",
+    "name": "Flora & Fungi Watch Australia",
+    "aim": "Map the phenology, flowering times, and fruiting bodies of native Australian flora and macrofungi.",
+    "description": "Changes in temperature and rainfall patterns significantly alter the flowering times of native plants and the fruiting seasons of wild fungi. This nationwide project engages citizen scientists in documenting wild orchids, proteaceae, eucalyptus blossom events, and forest floor fungi.",
+    "difficulty": "Easy",
+    "startDate": "2023-01-01T00:00:00Z",
+    "endDate": "2028-12-31T23:59:59Z",
+    "plannedStartDate": "2023-01-01T00:00:00Z",
+    "plannedEndDate": "2028-12-31T23:59:59Z",
+    "isExternal": false,
+    "isSciStarter": false,
+    "isMERIT": false,
+    "projectType": "citizenScience",
+    "keywords": [
+      "fungi",
+      "flora",
+      "mushrooms",
+      "botany",
+      "mycology",
+      "flowering"
+    ],
+    "tags": [
+      "Fungi",
+      "Flora",
+      "Phenology",
+      "Botanical Census"
+    ],
+    "organisationId": "org-ala-01",
+    "organisationName": "Atlas of Living Australia",
+    "scienceType": [
+      "Mycology",
+      "Botany",
+      "Phenology"
+    ],
+    "ecoScienceType": [
+      "Plant Ecology",
+      "Mycorrhizal Networks"
+    ],
+    "urlImage": "https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=800&auto=format&fit=crop&q=80",
+    "fullSizeImageUrl": "https://images.unsplash.com/photo-1543852786-1cf6624b9987?w=1600&auto=format&fit=crop&q=80",
+    "urlWeb": "https://www.ala.org.au/fungi-watch",
+    "projectLogoImage": "https://biocollect.ala.org.au/static/images/ala-logo.png",
+    "projectLogoImageCredit": "ALA Collections",
+    "contactName": "Dr. Erin Campbell",
+    "contactDetails": "support@ala.org.au",
+    "projectTask": "Search for blooming wildflowers or fungi caps, photograph top, underside and habitat.",
+    "projectEquipment": "Hand camera or phone, small mirror for gill photos",
+    "projectHowToParticipate": "Walk in damp forest or heathland areas, inspect decomposing logs and forest floor, log sighting.",
+    "containsActivity": true,
+    "noCost": true,
+    "userIsProjectMember": true,
+    "hub": "ala",
+    "coverage": {
+      "datum": "WGS84",
+      "fid": "cov-ala-01",
+      "other": [],
+      "precision": "High",
+      "lga": [
+        "Blue Mountains",
+        "Dandenong Ranges",
+        "Adelaide Hills"
+      ],
+      "bbox": "115.0,-38.5,152.0,-28.0",
+      "aream2": 4500000000000,
+      "decimalLatitude": -35.2809,
+      "decimalLongitude": 149.13,
+      "pid": 3001,
+      "uncertainty": "8m",
+      "type": "Country",
+      "elect": [
+        "Canberra",
+        "Fenner"
+      ],
+      "cmz": [
+        "Southeast Temperate"
+      ],
+      "state": [
+        "ACT",
+        "NSW",
+        "VIC",
+        "TAS",
+        "SA",
+        "WA"
+      ],
+      "radius": 50000,
+      "mvg": "Temperate Wet Sclerophyll",
+      "areaKmSq": 4500000,
+      "nrm": [
+        "ACT NRM Region"
+      ],
+      "locality": "Southern and Eastern Australia",
+      "centre": [
+        "-35.2809",
+        "149.13"
+      ],
+      "mvs": "Wet Sclerophyll Forest",
+      "name": "Flora and Fungi National Sector",
+      "imcra4_pb": [],
+      "ibra": [
+        "South Eastern Highlands"
+      ],
+      "layerName": "National Fungi Grid"
+    },
+    "links": [
+      {
+        "role": "twitter",
+        "url": "https://twitter.com/AtlasLivingAus"
+      }
+    ],
+    "projectActivities": []
+  }
+]

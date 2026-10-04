@@ -1,0 +1,23 @@
+[
+  {
+    "id": "acsa",
+    "url": "acsa",
+    "name": "Australian Citizen Science Association (ACSA)",
+    "description": "Advancing citizen science through knowledge sharing and biodiversity mapping.",
+    "logo": "https://biocollect.ala.org.au/static/images/acsa-logo.png"
+  },
+  {
+    "id": "ala",
+    "url": "ala",
+    "name": "Atlas of Living Australia",
+    "description": "Australia's national biodiversity database providing open access to vast species datasets.",
+    "logo": "https://biocollect.ala.org.au/static/images/ala-logo.png"
+  },
+  {
+    "id": "kfri",
+    "url": "kfri",
+    "name": "Kerala Forest Research Institute (KFRI)",
+    "description": "Scientific research on forestry, biodiversity conservation, and tropical ecosystem monitoring.",
+    "logo": "https://biocollect.ala.org.au/static/images/kfri-logo.png"
+  }
+]

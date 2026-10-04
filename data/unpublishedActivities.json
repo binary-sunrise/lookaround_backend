@@ -1,0 +1,57 @@
+{
+  "total": 2,
+  "activities": [
+    {
+      "activityId": "offline-act-001",
+      "isInvalidDraft": false,
+      "uploadFlag": true,
+      "name": "BioBlitz Observation Form",
+      "projectActivityId": "pa-001",
+      "projectId": "proj-gsb-01",
+      "surveyDate": "2026-03-30T11:00:00Z",
+      "type": "BioBlitz Observation Form",
+      "featureImage": {
+        "thumbnailUrl": "https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=300&auto=format&fit=crop&q=80"
+      },
+      "species": [
+        {
+          "name": "Eolophus roseicapilla",
+          "commonName": "Galah",
+          "scientificName": "Eolophus roseicapilla",
+          "outputSpeciesId": "sp-001",
+          "guid": "https://bie.ala.org.au/species/urn:lsid:biodiversity.org.au:afd.taxon:eolophus-roseicapilla"
+        }
+      ],
+      "transients": {
+        "viewActivityUrl": "/pwa/bioActivity/view/offline-act-001",
+        "editActivityUrl": "/pwa/bioActivity/edit/pa-001?activityId=offline-act-001"
+      }
+    },
+    {
+      "activityId": "offline-act-002",
+      "isInvalidDraft": false,
+      "uploadFlag": true,
+      "name": "Aussie Bird Count Form",
+      "projectActivityId": "pa-003",
+      "projectId": "proj-abc-02",
+      "surveyDate": "2026-03-30T09:30:00Z",
+      "type": "Aussie Bird Count Form",
+      "featureImage": {
+        "thumbnailUrl": "https://images.unsplash.com/photo-1555169062-013468b47731?w=300&auto=format&fit=crop&q=80"
+      },
+      "species": [
+        {
+          "name": "Malurus cyaneus",
+          "commonName": "Superb Fairy-wren",
+          "scientificName": "Malurus cyaneus",
+          "outputSpeciesId": "sp-002",
+          "guid": "https://bie.ala.org.au/species/urn:lsid:biodiversity.org.au:afd.taxon:malurus-cyaneus"
+        }
+      ],
+      "transients": {
+        "viewActivityUrl": "/pwa/bioActivity/view/offline-act-002",
+        "editActivityUrl": "/pwa/bioActivity/edit/pa-003?activityId=offline-act-002"
+      }
+    }
+  ]
+}
