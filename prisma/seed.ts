@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { prisma } from '../src/db/client';
+import { hashPassword } from 'better-auth/crypto';
 
 function loadJson<T>(fileName: string): T[] {
   const filePath = path.join(__dirname, '../data', fileName);
@@ -69,6 +70,23 @@ export async function main() {
         customUserId: user['custom:userid'] || user.customUserId || null,
         avatar: user.avatar || null,
         organisation: user.organisation || null,
+        image: user.avatar ? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}` : null,
+      },
+    });
+
+    // Create credential account for Better Auth login
+    const defaultPasswordHash = await hashPassword('Password123!');
+    await prisma.account.upsert({
+      where: { id: `acc-${user.id}` },
+      update: {
+        password: defaultPasswordHash,
+      },
+      create: {
+        id: `acc-${user.id}`,
+        accountId: user.id,
+        providerId: 'credential',
+        userId: user.id,
+        password: defaultPasswordHash,
       },
     });
   }

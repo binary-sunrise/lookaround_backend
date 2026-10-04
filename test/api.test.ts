@@ -333,4 +333,142 @@ describe('LookAround Backend API Contract Test Suite', () => {
       assert.ok(Array.isArray(body.activities));
     });
   });
+
+  // ==========================================
+  // 8. Better Auth Modern Authentication Flows
+  // ==========================================
+  describe('Better Auth Modern Authentication Flows', () => {
+    let sessionCookie = '';
+    let bearerToken = '';
+
+    test('authenticates existing user via email and password', async () => {
+      const res = await fetch(`${baseUrl}/api/auth/sign-in/email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Origin: 'http://localhost:3000',
+        },
+        body: JSON.stringify({
+          email: 'alex.citizen@ala.org.au',
+          password: 'Password123!',
+        }),
+      });
+
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.ok(data.user);
+      assert.equal(data.user.email, 'alex.citizen@ala.org.au');
+      assert.equal(data.user.name, 'Alex Citizen');
+      assert.ok(data.token, 'Session token should be present in response');
+
+      bearerToken = data.token;
+      const setCookie = res.headers.get('set-cookie');
+      if (setCookie) {
+        sessionCookie = setCookie.split(';')[0];
+      }
+    });
+
+    test('rejects sign-in with invalid password', async () => {
+      const res = await fetch(`${baseUrl}/api/auth/sign-in/email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Origin: 'http://localhost:3000',
+        },
+        body: JSON.stringify({
+          email: 'alex.citizen@ala.org.au',
+          password: 'WrongPassword!',
+        }),
+      });
+
+      assert.ok(res.status >= 400 && res.status < 500);
+    });
+
+    test('retrieves active session via cookie', async () => {
+      if (!sessionCookie) return;
+      const res = await fetch(`${baseUrl}/api/auth/get-session`, {
+        headers: {
+          Cookie: sessionCookie,
+          Origin: 'http://localhost:3000',
+        },
+      });
+
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.ok(data);
+      assert.equal(data.user.email, 'alex.citizen@ala.org.au');
+    });
+
+    test('retrieves active session via Bearer session token', async () => {
+      assert.ok(bearerToken, 'Bearer token should have been acquired from sign-in');
+      const res = await fetch(`${baseUrl}/api/auth/get-session`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          Origin: 'http://localhost:3000',
+        },
+      });
+
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.ok(data);
+      assert.equal(data.user.email, 'alex.citizen@ala.org.au');
+    });
+
+    test('authenticates API request using Bearer session token', async () => {
+      const res = await fetch(`${baseUrl}/ws/bioactivity/search?view=myrecords`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+        },
+      });
+
+      assert.equal(res.status, 200);
+      const body = await res.json();
+      assert.ok(Array.isArray(body.activities));
+    });
+
+    test('registers a new user via sign-up', async () => {
+      const newEmail = `new.user.${Date.now()}@example.com`;
+      const res = await fetch(`${baseUrl}/api/auth/sign-up/email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Origin: 'http://localhost:3000',
+        },
+        body: JSON.stringify({
+          name: 'New Researcher',
+          email: newEmail,
+          password: 'SecurePassword123!',
+        }),
+      });
+
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.ok(data.user);
+      assert.equal(data.user.email, newEmail);
+      assert.equal(data.user.name, 'New Researcher');
+    });
+
+    test('signs out user and invalidates session', async () => {
+      const res = await fetch(`${baseUrl}/api/auth/sign-out`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          Origin: 'http://localhost:3000',
+        },
+      });
+
+      assert.equal(res.status, 200);
+
+      // Verify get-session is now null
+      const checkRes = await fetch(`${baseUrl}/api/auth/get-session`, {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          Origin: 'http://localhost:3000',
+        },
+      });
+      const checkData = await checkRes.json();
+      assert.equal(checkData, null);
+    });
+  });
 });
+

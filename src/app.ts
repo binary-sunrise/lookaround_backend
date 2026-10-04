@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { extractAuthToken } from './middleware/auth';
+import { toNodeHandler } from 'better-auth/node';
+import { auth } from './auth';
+import { extractAuthSession } from './middleware/auth';
 import { errorHandler } from './middleware/errorHandler';
 import hubRouter from './routes/hub';
 import projectRouter from './routes/project';
@@ -14,15 +16,22 @@ export function createApp() {
   const app = express();
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 
-  // Middleware
+  // Enable CORS with credentials for HTTP-only cookies and cross-origin requests
   app.use(
     cors({
-      origin: [frontendUrl, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+      origin: [frontendUrl, 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:3000', 'http://127.0.0.1:3000'],
       credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'X-Requested-With'],
     })
   );
+
+  // Mount Better Auth router on /api/auth/*splat
+  app.all('/api/auth/*splat', toNodeHandler(auth));
+
+  // Express body parsers and session extraction for API routes
   app.use(express.json());
-  app.use(extractAuthToken);
+  app.use(extractAuthSession);
 
   // Mount API Contract routes
   app.use('/ws/hub', hubRouter);

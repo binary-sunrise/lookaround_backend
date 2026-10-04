@@ -113,20 +113,72 @@ model BioActivity {
 }
 
 model User {
-  id            String   @id
-  sub           String   @unique
+  id            String    @id
+  sub           String?   @unique
   name          String
   givenName     String?
   familyName    String?
-  email         String   @unique
-  emailVerified Boolean  @default(true)
+  email         String    @unique
+  emailVerified Boolean   @default(true)
+  image         String?
   role          String?
-  roles         String[] @default([])
+  roles         String[]  @default([])
   customUserId  String?
   avatar        String?
   organisation  String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  accounts      Account[]
 
   @@map("users")
 }
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
+
