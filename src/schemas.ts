@@ -149,7 +149,8 @@ export const ActivitySearchQuerySchema = z.object({
   offset: z.coerce.number().optional().default(0),
   max: z.coerce.number().optional().default(20),
   userId: z.string().optional(),
-});
+  fq: z.union([z.string(), z.array(z.string())]).optional(),
+}).passthrough();
 
 export type ActivitySearchQuery = z.infer<typeof ActivitySearchQuerySchema>;
 

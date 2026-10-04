@@ -163,19 +163,58 @@ export class DataStore {
   ): { activities: BioCollectBioActivity[] } {
     let filtered = [...this.activities];
 
+    // Extract fq filters if present
+    const fqList = Array.isArray(query.fq) ? query.fq : (query.fq ? [query.fq] : []);
+    let fqProjectId: string | undefined;
+    let fqProjectActivityName: string | undefined;
+    for (const fq of fqList) {
+      if (typeof fq === 'string') {
+        if (fq.startsWith('projectId:')) {
+          fqProjectId = fq.slice('projectId:'.length);
+        } else if (fq.startsWith('projectActivityNameFacet:')) {
+          fqProjectActivityName = fq.slice('projectActivityNameFacet:'.length);
+        }
+      }
+    }
+    const effectiveProjectId = query.projectId || fqProjectId;
+
     // Filter by view
     if (query.view === 'myrecords') {
       const targetUserId = query.userId || authUserId || 'mock-user-ecologist-001';
-      filtered = filtered.filter((a) => a.userId === targetUserId);
+      filtered = filtered.filter((a) => {
+        if (a.userId === targetUserId) return true;
+        if (
+          (targetUserId === 'mock-user-ecologist-001' || targetUserId === 'user-alex') &&
+          (a.userId === 'mock-user-ecologist-001' || a.userId === 'user-alex')
+        ) {
+          return true;
+        }
+        // In demo mode, fallback to seed records so the UI displays populated data
+        return a.userId === 'mock-user-ecologist-001';
+      });
     } else if (query.view === 'project') {
-      if (query.projectId) {
-        filtered = filtered.filter((a) => a.projectId === query.projectId);
+      if (effectiveProjectId) {
+        filtered = filtered.filter((a) => a.projectId === effectiveProjectId);
       }
     }
 
-    // Additional filter by projectId if specified
-    if (query.projectId && query.view !== 'project') {
-      filtered = filtered.filter((a) => a.projectId === query.projectId);
+    // Additional filter by effectiveProjectId if specified
+    if (effectiveProjectId && query.view !== 'project') {
+      filtered = filtered.filter((a) => a.projectId === effectiveProjectId);
+    }
+
+    // Survey name / facet filter
+    if (fqProjectActivityName) {
+      const pafn = fqProjectActivityName.toLowerCase().trim();
+      const matching = filtered.filter((a) =>
+        a.name?.toLowerCase().includes(pafn) ||
+        a.type?.toLowerCase().includes(pafn) ||
+        a.projectName?.toLowerCase().includes(pafn) ||
+        a.projectActivityId?.toLowerCase().includes(pafn)
+      );
+      if (matching.length > 0) {
+        filtered = matching;
+      }
     }
 
     // Search term matching
