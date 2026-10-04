@@ -44,7 +44,7 @@ export async function extractAuthSession(req: Request, res: Response, next: Next
     if (sessionResult && sessionResult.user) {
       req.user = sessionResult.user;
       req.session = sessionResult.session;
-      req.userId = sessionResult.user.id || sessionResult.user.sub;
+      req.userId = sessionResult.user.id || (sessionResult.user.sub ?? undefined);
       req.userToken = sessionResult.session?.token || req.userToken;
       return next();
     }

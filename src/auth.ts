@@ -8,15 +8,21 @@ dotenv.config();
 
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 const backendUrl = process.env.BETTER_AUTH_URL || `http://localhost:${process.env.PORT || 3000}`;
+const extraOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim()).filter(Boolean)
+  : [];
 
-const trustedOrigins = [
-  frontendUrl,
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  backendUrl,
-  'http://localhost:3000',
-  'http://127.0.0.1:3000',
-];
+const trustedOrigins = Array.from(
+  new Set([
+    frontendUrl,
+    ...extraOrigins,
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    backendUrl,
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+  ])
+);
 
 // Configure optional OAuth providers if credentials are provided in env
 const socialProviders: Record<string, any> = {};

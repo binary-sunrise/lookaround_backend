@@ -32,6 +32,29 @@ describe('LookAround Backend API Contract Test Suite', () => {
   });
 
   // ==========================================
+  // Health & Deployment Verification Endpoints
+  // ==========================================
+  describe('GET /health & GET /', () => {
+    test('GET /health returns 200 with status ok and service info', async () => {
+      const res = await fetch(`${baseUrl}/health`);
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.equal(data.status, 'ok');
+      assert.equal(data.service, 'lookaround_backend');
+      assert.ok(typeof data.timestamp === 'string');
+      assert.ok(typeof data.uptime === 'number');
+    });
+
+    test('GET / returns 200 with online status and metadata', async () => {
+      const res = await fetch(`${baseUrl}/`);
+      assert.equal(res.status, 200);
+      const data = await res.json();
+      assert.equal(data.status, 'online');
+      assert.equal(data.name, 'LookAround Backend API');
+    });
+  });
+
+  // ==========================================
   // 1. Hubs Endpoint: GET /ws/hub/pwaList
   // ==========================================
   describe('GET /ws/hub/pwaList', () => {

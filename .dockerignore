@@ -1,0 +1,37 @@
+# Version control & git
+.git
+.gitignore
+
+# Dependencies & build outputs
+node_modules
+dist
+coverage
+
+# Environment & secrets (never leak credentials into Docker image layers)
+.env
+.env.*
+!.env.example
+!.env.production.example
+
+# Local development and docker-compose files
+docker-compose*.yml
+Makefile
+
+# Test suites & artifacts
+test
+*.test.ts
+*.spec.ts
+
+# IDE and Editor configurations
+.vscode
+.idea
+*.swp
+*.swo
+
+# System and logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
