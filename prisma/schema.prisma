@@ -1,0 +1,132 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Hub {
+  id          String   @id
+  url         String
+  name        String
+  description String
+  logo        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("hubs")
+}
+
+model Project {
+  projectId               String        @id
+  name                    String
+  description             String?       @default("")
+  startDate               String?
+  endDate                 String?
+  plannedStartDate        String?
+  plannedEndDate          String?
+  urlImage                String?
+  fullSizeImageUrl        String?
+  urlWeb                  String?
+  projectLogoImage        String?
+  projectLogoImageCredit  String?
+  contactName             String?
+  contactDetails          String?
+  projectTask             String?
+  projectEquipment        String?
+  projectHowToParticipate String?
+  organisationName        String?       @default("")
+  organisationId          String?
+  aim                     String?
+  difficulty              String?
+  isExternal              Boolean       @default(false)
+  isSciStarter            Boolean       @default(false)
+  isMERIT                 Boolean       @default(false)
+  projectType             String?
+  hub                     String?
+  keywords                String[]      @default([])
+  tags                    String[]      @default([])
+  scienceType             String[]      @default([])
+  ecoScienceType          String[]      @default([])
+  rawData                 Json?
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+
+  surveys                 Survey[]
+  activities              BioActivity[]
+
+  @@map("projects")
+}
+
+model Survey {
+  id                String   @id
+  projectActivityId String?
+  name              String
+  description       String?  @default("")
+  startDate         String?
+  endDate           String?
+  status            String?  @default("Active")
+  published         Boolean  @default(true)
+  publicAccess      Boolean  @default(true)
+  projectId         String?
+  rawData           Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  project           Project? @relation(fields: [projectId], references: [projectId], onDelete: Cascade)
+
+  @@index([projectId])
+  @@map("surveys")
+}
+
+model BioActivity {
+  activityId        String   @id
+  projectActivityId String
+  type              String
+  status            String
+  lastUpdated       String
+  endDate           String?
+  userId            String
+  name              String
+  projectName       String?  @default("")
+  projectId         String?
+  activityOwnerName String?
+  siteId            String?
+  embargoed         Boolean  @default(false)
+  embargoUntil      String?  @default("")
+  projectType       String?
+  thumbnailUrl      String?
+  showCrud          Boolean  @default(true)
+  userCanModerate   Boolean  @default(true)
+  records           Json?    @default("[]")
+  rawData           Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  project           Project? @relation(fields: [projectId], references: [projectId], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([projectActivityId])
+  @@map("bio_activities")
+}
+
+model User {
+  id            String   @id
+  sub           String   @unique
+  name          String
+  givenName     String?
+  familyName    String?
+  email         String   @unique
+  emailVerified Boolean  @default(true)
+  role          String?
+  roles         String[] @default([])
+  customUserId  String?
+  avatar        String?
+  organisation  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("users")
+}
