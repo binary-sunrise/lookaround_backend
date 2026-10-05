@@ -18,7 +18,16 @@ router.get('/search', async (req, res, next) => {
     if (query.hub) {
       whereClause.hub = { equals: query.hub, mode: 'insensitive' };
     }
-    
+
+    const fqList = Array.isArray(query.fq) ? query.fq : [query.fq];
+    for (const fq of fqList) {
+      if (fq === 'isExternal:F') {
+        whereClause.isExternal = false;
+      } else if (fq === 'isExternal:T') {
+        whereClause.isExternal = true;
+      }
+    }
+
     const searchText = query.q || query.queryText;
     if (searchText) {
       const term = searchText.replace(/\*/g, '').trim();
@@ -31,14 +40,26 @@ router.get('/search', async (req, res, next) => {
       }
     }
 
-    const [total, projects] = await Promise.all([
-      prisma.project.count({ where: whereClause }),
-      prisma.project.findMany({
-        where: whereClause,
-        skip: offset,
-        take: max,
-      }),
-    ]);
+    let orderBy: any = undefined;
+    if (query.sort === 'nameSort') {
+      orderBy = { name: 'asc' };
+    } else if (query.sort === 'dateCreatedSort') {
+      orderBy = { startDate: 'desc' };
+    }
+
+    const total = await prisma.project.count({ where: whereClause });
+    const rawProjects = await prisma.project.findMany({
+      where: whereClause,
+      include: { surveys: true },
+      skip: offset,
+      take: max,
+      orderBy,
+    });
+
+    const projects = rawProjects.map((p) => ({
+      ...p,
+      projectActivities: p.surveys || [],
+    }));
 
     const result = {
       facets: [{ name: 'hub', title: 'Hub', entries: [], total: 0 }],

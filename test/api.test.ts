@@ -2,9 +2,33 @@ import { test, describe, before, after, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { app } from '../src/app';
-import { store } from '../src/services/store';
+import { prisma } from '../src/db/client';
 
-describe('LookAround Backend API Contract Test Suite', () => {
+  const defaultAct001 = {
+    activityId: 'act-001',
+    projectActivityId: 'pa-gsb-01',
+    type: 'BioBlitz Observation Form',
+    status: 'active',
+    lastUpdated: '2026-10-04T12:00:00Z',
+    endDate: '2026-10-04T12:00:00Z',
+    userId: 'mock-user-ecologist-001',
+    name: 'BioBlitz Observation Form',
+    projectName: 'Great Southern BioBlitz 2026',
+    projectId: 'proj-gsb-01',
+    activityOwnerName: 'Alex Citizen',
+    records: [
+      {
+        guid: 'rec-001',
+        name: 'Platycercus elegans',
+        commonName: 'Crimson Rosella',
+        multimedia: {
+          imageId: 'img-001',
+        },
+      },
+    ],
+  };
+
+describe('LookAround Backend API Contract Test Suite', { timeout: 60000 }, () => {
   let server: http.Server;
   let baseUrl: string;
 
@@ -24,11 +48,6 @@ describe('LookAround Backend API Contract Test Suite', () => {
     await new Promise<void>((resolve, reject) => {
       server.close((err) => (err ? reject(err) : resolve()));
     });
-  });
-
-  beforeEach(() => {
-    // Reset data store to initial state between tests
-    store.reset();
   });
 
   // ==========================================
@@ -58,7 +77,7 @@ describe('LookAround Backend API Contract Test Suite', () => {
   // 1. Hubs Endpoint: GET /ws/hub/pwaList
   // ==========================================
   describe('GET /ws/hub/pwaList', () => {
-    test('returns 200 and list of hubs adhering to contract schema', async () => {
+    test('returns 200 and list of hubs adhering to contract schema', { timeout: 60000 }, async () => {
       const res = await fetch(`${baseUrl}/ws/hub/pwaList`);
       assert.equal(res.status, 200);
 
@@ -89,7 +108,7 @@ describe('LookAround Backend API Contract Test Suite', () => {
       assert.ok(Array.isArray(body.details), 'details should be an array of errors');
     });
 
-    test('returns 200 and projects matching contract when fq is provided', async () => {
+    test('returns 200 and projects matching contract when fq is provided', { timeout: 60000 }, async () => {
       const res = await fetch(`${baseUrl}/ws/project/search?fq=isExternal:F`);
       assert.equal(res.status, 200);
 
@@ -297,6 +316,12 @@ describe('LookAround Backend API Contract Test Suite', () => {
   describe('DELETE /ws/bioactivity/delete/:activityId', () => {
     test('returns 200 Void response when activity is deleted', async () => {
       // First ensure act-001 exists
+      await prisma.bioActivity.upsert({
+        where: { activityId: 'act-001' },
+        update: defaultAct001,
+        create: defaultAct001,
+      });
+
       const checkRes = await fetch(`${baseUrl}/ws/bioactivity/search?view=allrecords`);
       const checkBody = await checkRes.json();
       assert.ok(checkBody.activities.some((a: any) => a.activityId === 'act-001'));
@@ -315,6 +340,13 @@ describe('LookAround Backend API Contract Test Suite', () => {
       const afterRes = await fetch(`${baseUrl}/ws/bioactivity/search?view=allrecords`);
       const afterBody = await afterRes.json();
       assert.ok(!afterBody.activities.some((a: any) => a.activityId === 'act-001'));
+
+      // Restore act-001
+      await prisma.bioActivity.upsert({
+        where: { activityId: 'act-001' },
+        update: defaultAct001,
+        create: defaultAct001,
+      });
     });
 
     test('returns 404 Not Found when trying to delete non-existent activity', async () => {

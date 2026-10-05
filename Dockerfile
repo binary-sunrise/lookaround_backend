@@ -68,8 +68,6 @@ COPY --chown=nodejs:nodejs --from=builder /app/node_modules/@prisma ./node_modul
 COPY --chown=nodejs:nodejs prisma ./prisma
 COPY --chown=nodejs:nodejs prisma.config.ts ./
 
-# Copy initial seed data (for remote seed pipeline)
-COPY --chown=nodejs:nodejs data ./data
 
 # Expose default application port (overridden dynamically via $PORT at runtime)
 EXPOSE 3000
