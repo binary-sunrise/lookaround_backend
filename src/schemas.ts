@@ -156,8 +156,19 @@ export const BioCollectBioActivitySchema = z.object({
 export type BioCollectBioActivity = z.infer<typeof BioCollectBioActivitySchema>;
 
 export const ActivitySearchQuerySchema = z.object({
-  // view is required: 'myrecords', 'project', 'allrecords'
-  view: z.enum(['myrecords', 'project', 'allrecords'] as const, {
+  // view is required: 'myrecords', 'project', 'allrecords' or related BioCollect views
+  view: z.string({
+    error: "Query parameter 'view' is required and must be 'myrecords', 'project', or 'allrecords'",
+  }).refine((v) => [
+    'myrecords',
+    'project',
+    'allrecords',
+    'projectrecords',
+    'myprojectrecords',
+    'userprojectactivityrecords',
+    'projectactivityrecords',
+    'all',
+  ].includes(v), {
     message: "Query parameter 'view' is required and must be 'myrecords', 'project', or 'allrecords'",
   }),
   projectId: z.string().optional(),
@@ -233,17 +244,17 @@ export const CreateSurveySchema = z.object({
 export const UpdateSurveySchema = CreateSurveySchema.partial();
 
 export const CreateBioActivitySchema = z.object({
-  activityId: z.string().min(1, 'activityId is required'),
+  activityId: z.string().optional(),
   projectActivityId: z.string().min(1, 'projectActivityId is required'),
-  type: z.string().min(1, 'type is required'),
-  status: z.string().min(1, 'status is required'),
+  type: z.string().optional().default('Observation'),
+  status: z.string().optional().default('Active'),
   lastUpdated: z.string().optional(),
   endDate: z.string().optional(),
-  userId: z.string().min(1, 'userId is required'),
+  userId: z.string().optional().default('mock-user-ecologist-001'),
   name: z.string().min(1, 'name is required'),
   projectName: z.string().optional().default(''),
   projectId: z.string().optional(),
-  activityOwnerName: z.string().optional(),
+  activityOwnerName: z.string().optional().default('Alex Citizen'),
   siteId: z.string().optional(),
   embargoed: z.boolean().optional().default(false),
   embargoUntil: z.string().optional().default(''),
@@ -252,7 +263,8 @@ export const CreateBioActivitySchema = z.object({
   showCrud: z.boolean().optional().default(true),
   userCanModerate: z.boolean().optional().default(true),
   records: z.any().optional().default([]),
+  species: z.any().optional(),
   rawData: z.any().optional(),
-});
+}).passthrough();
 export const UpdateBioActivitySchema = CreateBioActivitySchema.partial();
 

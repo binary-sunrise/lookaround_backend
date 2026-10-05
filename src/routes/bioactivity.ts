@@ -80,7 +80,17 @@ router.get('/search', async (req, res, next) => {
       });
     }
 
-    const paginated = activities.slice(offset, offset + max);
+    const paginated = activities.slice(offset, offset + max).map((a) => {
+      const rawRecords = Array.isArray(a.records) ? a.records : [];
+      const records = rawRecords.map((r: any, idx: number) => ({
+        ...r,
+        multimedia: r.multimedia || { imageId: `img-${a.activityId}-${idx}` },
+      }));
+      return {
+        ...a,
+        records,
+      };
+    });
     const validated = BioCollectBioActivitySearchResponseSchema.parse({ activities: paginated });
     res.json(validated);
   } catch (err) {
@@ -110,10 +120,51 @@ const handleCreateActivity = async (req: any, res: any, next: any) => {
   try {
     const { CreateBioActivitySchema } = await import('../schemas');
     const data = CreateBioActivitySchema.parse(req.body);
+    const activityId = data.activityId || `act-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+    const userId = data.userId || req.userId || 'mock-user-ecologist-001';
+
+    let records = Array.isArray(data.records) && data.records.length > 0 ? data.records : [];
+    if (records.length === 0 && data.species) {
+      const speciesList = Array.isArray(data.species) ? data.species : [data.species];
+      records = speciesList.map((s: any, idx: number) => ({
+        name: s.name || data.name,
+        commonName: s.commonName || s.name || data.name,
+        scientificName: s.scientificName || s.name || data.name,
+        guid: s.guid || '',
+        outputSpeciesId: s.outputSpeciesId || `sp-${Date.now()}-${idx}`,
+        multimedia: {
+          imageId: `img-${activityId}-${idx}`,
+        },
+      }));
+    }
+
+    records = records.map((r: any, idx: number) => ({
+      ...r,
+      multimedia: r.multimedia || { imageId: `img-${activityId}-${idx}` },
+    }));
+
     const activity = await prisma.bioActivity.create({
       data: {
-        ...data,
+        activityId,
+        projectActivityId: data.projectActivityId,
+        type: data.type || 'Observation',
+        status: data.status || 'Active',
         lastUpdated: data.lastUpdated || new Date().toISOString(),
+        endDate: data.endDate || null,
+        userId,
+        name: data.name,
+        projectName: data.projectName || '',
+        projectId: data.projectId || null,
+        activityOwnerName: data.activityOwnerName || 'Alex Citizen',
+        siteId: data.siteId || null,
+        embargoed: Boolean(data.embargoed),
+        embargoUntil: data.embargoUntil || '',
+        projectType: data.projectType || null,
+        thumbnailUrl: data.thumbnailUrl || (data.featureImage as any)?.thumbnailUrl || null,
+        showCrud: data.showCrud ?? true,
+        userCanModerate: data.userCanModerate ?? true,
+        records,
+        rawData: data.rawData || null,
       },
     });
     res.status(201).json(activity);
