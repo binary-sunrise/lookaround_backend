@@ -108,4 +108,103 @@ router.get('/:projectId', async (req, res, next) => {
   }
 });
 
+// CREATE Project
+const handleCreateProject = async (req: any, res: any, next: any) => {
+  try {
+    const { CreateProjectSchema } = await import('../schemas');
+    const data = CreateProjectSchema.parse(req.body);
+    const created = await prisma.project.create({
+      data: {
+        projectId: data.projectId,
+        name: data.name,
+        description: data.description,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        plannedStartDate: data.plannedStartDate,
+        plannedEndDate: data.plannedEndDate,
+        urlImage: data.urlImage,
+        fullSizeImageUrl: data.fullSizeImageUrl,
+        urlWeb: data.urlWeb,
+        projectLogoImage: data.projectLogoImage,
+        projectLogoImageCredit: data.projectLogoImageCredit,
+        contactName: data.contactName,
+        contactDetails: data.contactDetails,
+        projectTask: data.projectTask,
+        projectEquipment: data.projectEquipment,
+        projectHowToParticipate: data.projectHowToParticipate,
+        organisationName: data.organisationName,
+        organisationId: data.organisationId,
+        aim: data.aim,
+        difficulty: data.difficulty,
+        isExternal: data.isExternal,
+        isSciStarter: data.isSciStarter,
+        isMERIT: data.isMERIT,
+        projectType: data.projectType,
+        hub: data.hub,
+        keywords: data.keywords,
+        tags: data.tags,
+        scienceType: data.scienceType,
+        ecoScienceType: data.ecoScienceType,
+        rawData: data.rawData,
+      },
+    });
+    res.status(201).json(created);
+  } catch (err) {
+    next(err);
+  }
+};
+router.post('/create', handleCreateProject);
+router.post('/', handleCreateProject);
+
+// UPDATE Project
+const handleUpdateProject = async (req: any, res: any, next: any) => {
+  try {
+    const { projectId } = req.params;
+    const { UpdateProjectSchema } = await import('../schemas');
+    const data = UpdateProjectSchema.parse(req.body);
+
+    const existing = await prisma.project.findUnique({
+      where: { projectId },
+    });
+    if (!existing) {
+      res.status(404).json({ error: 'Project not found' });
+      return;
+    }
+
+    const updated = await prisma.project.update({
+      where: { projectId },
+      data,
+    });
+    res.status(200).json(updated);
+  } catch (err) {
+    next(err);
+  }
+};
+router.put('/update/:projectId', handleUpdateProject);
+router.put('/:projectId', handleUpdateProject);
+
+// DELETE Project
+const handleDeleteProject = async (req: any, res: any, next: any) => {
+  try {
+    const { projectId } = req.params;
+    const existing = await prisma.project.findUnique({
+      where: { projectId },
+    });
+    if (!existing) {
+      res.status(404).json({ error: 'Project not found' });
+      return;
+    }
+
+    await prisma.project.delete({
+      where: { projectId },
+    });
+    res.status(200).send();
+  } catch (err) {
+    next(err);
+  }
+};
+router.delete('/delete/:projectId', handleDeleteProject);
+router.delete('/:projectId', handleDeleteProject);
+
 export default router;
+

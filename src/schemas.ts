@@ -175,3 +175,84 @@ export const BioCollectBioActivitySearchResponseSchema = z.object({
 });
 
 export type BioCollectBioActivitySearchResponse = z.infer<typeof BioCollectBioActivitySearchResponseSchema>;
+
+// ==========================================
+// 5. Entity Mutation (Create / Update) Schemas
+// ==========================================
+export const CreateHubSchema = BioCollectHubSchema;
+export const UpdateHubSchema = BioCollectHubSchema.partial();
+
+export const CreateProjectSchema = z.object({
+  projectId: z.string().min(1, 'projectId is required'),
+  name: z.string().min(1, 'name is required'),
+  description: z.string().optional().default(''),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  plannedStartDate: z.string().optional(),
+  plannedEndDate: z.string().optional(),
+  urlImage: z.string().optional(),
+  fullSizeImageUrl: z.string().optional(),
+  urlWeb: z.string().optional(),
+  projectLogoImage: z.string().optional(),
+  projectLogoImageCredit: z.string().optional(),
+  contactName: z.string().optional(),
+  contactDetails: z.string().optional(),
+  projectTask: z.string().optional(),
+  projectEquipment: z.string().optional(),
+  projectHowToParticipate: z.string().optional(),
+  organisationName: z.string().optional().default(''),
+  organisationId: z.string().optional(),
+  aim: z.string().optional(),
+  difficulty: z.string().optional(),
+  isExternal: z.boolean().optional().default(false),
+  isSciStarter: z.boolean().optional().default(false),
+  isMERIT: z.boolean().optional().default(false),
+  projectType: z.string().optional(),
+  hub: z.string().optional(),
+  keywords: z.array(z.string()).optional().default([]),
+  tags: z.array(z.string()).optional().default([]),
+  scienceType: z.array(z.string()).optional().default([]),
+  ecoScienceType: z.array(z.string()).optional().default([]),
+  rawData: z.any().optional(),
+});
+export const UpdateProjectSchema = CreateProjectSchema.partial();
+
+export const CreateSurveySchema = z.object({
+  id: z.string().min(1, 'id is required'),
+  name: z.string().min(1, 'name is required'),
+  projectActivityId: z.string().optional(),
+  description: z.string().optional().default(''),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  status: z.string().optional().default('Active'),
+  published: z.boolean().optional().default(true),
+  publicAccess: z.boolean().optional().default(true),
+  projectId: z.string().optional(),
+  rawData: z.any().optional(),
+});
+export const UpdateSurveySchema = CreateSurveySchema.partial();
+
+export const CreateBioActivitySchema = z.object({
+  activityId: z.string().min(1, 'activityId is required'),
+  projectActivityId: z.string().min(1, 'projectActivityId is required'),
+  type: z.string().min(1, 'type is required'),
+  status: z.string().min(1, 'status is required'),
+  lastUpdated: z.string().optional(),
+  endDate: z.string().optional(),
+  userId: z.string().min(1, 'userId is required'),
+  name: z.string().min(1, 'name is required'),
+  projectName: z.string().optional().default(''),
+  projectId: z.string().optional(),
+  activityOwnerName: z.string().optional(),
+  siteId: z.string().optional(),
+  embargoed: z.boolean().optional().default(false),
+  embargoUntil: z.string().optional().default(''),
+  projectType: z.string().optional(),
+  thumbnailUrl: z.string().optional(),
+  showCrud: z.boolean().optional().default(true),
+  userCanModerate: z.boolean().optional().default(true),
+  records: z.any().optional().default([]),
+  rawData: z.any().optional(),
+});
+export const UpdateBioActivitySchema = CreateBioActivitySchema.partial();
+

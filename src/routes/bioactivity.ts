@@ -88,7 +88,74 @@ router.get('/search', async (req, res, next) => {
   }
 });
 
-router.delete('/delete/:activityId', async (req, res, next) => {
+// GET single activity
+router.get('/:activityId', async (req, res, next) => {
+  try {
+    const { activityId } = req.params;
+    const existing = await prisma.bioActivity.findUnique({
+      where: { activityId },
+    });
+    if (!existing) {
+      res.status(404).json({ error: 'Activity not found' });
+      return;
+    }
+    res.status(200).json(existing);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// CREATE activity
+const handleCreateActivity = async (req: any, res: any, next: any) => {
+  try {
+    const { CreateBioActivitySchema } = await import('../schemas');
+    const data = CreateBioActivitySchema.parse(req.body);
+    const activity = await prisma.bioActivity.create({
+      data: {
+        ...data,
+        lastUpdated: data.lastUpdated || new Date().toISOString(),
+      },
+    });
+    res.status(201).json(activity);
+  } catch (err) {
+    next(err);
+  }
+};
+router.post('/create', handleCreateActivity);
+router.post('/', handleCreateActivity);
+
+// UPDATE activity
+const handleUpdateActivity = async (req: any, res: any, next: any) => {
+  try {
+    const { activityId } = req.params;
+    const { UpdateBioActivitySchema } = await import('../schemas');
+    const data = UpdateBioActivitySchema.parse(req.body);
+
+    const existing = await prisma.bioActivity.findUnique({
+      where: { activityId },
+    });
+    if (!existing) {
+      res.status(404).json({ error: 'Activity not found' });
+      return;
+    }
+
+    const updated = await prisma.bioActivity.update({
+      where: { activityId },
+      data: {
+        ...data,
+        lastUpdated: data.lastUpdated || new Date().toISOString(),
+      },
+    });
+    res.status(200).json(updated);
+  } catch (err) {
+    next(err);
+  }
+};
+router.put('/update/:activityId', handleUpdateActivity);
+router.put('/:activityId', handleUpdateActivity);
+
+// DELETE activity
+const handleDeleteActivity = async (req: any, res: any, next: any) => {
   try {
     const { activityId } = req.params;
     const existing = await prisma.bioActivity.findUnique({
@@ -107,6 +174,9 @@ router.delete('/delete/:activityId', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
+};
+router.delete('/delete/:activityId', handleDeleteActivity);
+router.delete('/:activityId', handleDeleteActivity);
 
 export default router;
+

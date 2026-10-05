@@ -8,6 +8,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "tsx --test --test-timeout=60000 test/api.test.ts",
+    "test:crud": "tsx --test --test-timeout=120000 test/crud-neon-verification.test.ts",
+    "test:all": "tsx --test --test-timeout=120000 test/api.test.ts test/crud-neon-verification.test.ts",
     "db:start": "docker compose up -d postgres",
     "db:stop": "docker compose down",
     "db:migrate": "prisma migrate deploy",
