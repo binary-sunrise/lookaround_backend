@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { store } from '../services/store';
+import { prisma } from '../db/client';
 import {
   ActivitySearchQuerySchema,
   BioCollectBioActivitySearchResponseSchema,
@@ -7,32 +7,44 @@ import {
 
 const router = Router();
 
-// GET /ws/bioactivity/search
-router.get('/search', (req, res, next) => {
+router.get('/search', async (req, res, next) => {
   try {
     const query = ActivitySearchQuerySchema.parse(req.query);
-    const result = store.searchActivities(query, req.userId);
-    const validated = BioCollectBioActivitySearchResponseSchema.parse(result);
+    const offset = query.offset ?? 0;
+    const max = query.max ?? 20;
+
+    const whereClause: any = {};
+    if (query.projectId) {
+      whereClause.projectId = query.projectId;
+    }
+    
+    if (query.view === 'myrecords') {
+        const targetUserId = query.userId || req.userId || 'mock-user-ecologist-001';
+        whereClause.userId = targetUserId;
+    }
+
+    const activities = await prisma.bioActivity.findMany({
+      where: whereClause,
+      skip: offset,
+      take: max,
+    });
+
+    const validated = BioCollectBioActivitySearchResponseSchema.parse({ activities });
     res.json(validated);
   } catch (err) {
     next(err);
   }
 });
 
-// DELETE /ws/bioactivity/delete/:activityId
-router.delete('/delete/:activityId', (req, res, next) => {
+router.delete('/delete/:activityId', async (req, res, next) => {
   try {
     const { activityId } = req.params;
-    const deleted = store.deleteActivity(activityId);
-
-    if (deleted) {
-      // Contract: 200 OK with Void schema (no JSON payload required)
-      res.status(200).send();
-    } else {
-      res.status(404).json({ error: 'Activity not found' });
-    }
+    await prisma.bioActivity.delete({
+      where: { activityId },
+    });
+    res.status(200).send();
   } catch (err) {
-    next(err);
+    res.status(404).json({ error: 'Activity not found' });
   }
 });
 
