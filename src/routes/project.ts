@@ -58,6 +58,11 @@ router.get('/search', async (req, res, next) => {
 
     const projects = rawProjects.map((p) => ({
       ...p,
+      links: (p as any).links || [],
+      tags: p.tags || [],
+      keywords: p.keywords || [],
+      scienceType: p.scienceType || [],
+      ecoScienceType: p.ecoScienceType || [],
       projectActivities: p.surveys || [],
     }));
 
@@ -87,7 +92,15 @@ router.get('/:projectId', async (req, res, next) => {
       return;
     }
 
-    const formatted = { ...project, projectActivities: project.surveys || [] };
+    const formatted = {
+      ...project,
+      links: (project as any).links || [],
+      tags: project.tags || [],
+      keywords: project.keywords || [],
+      scienceType: project.scienceType || [],
+      ecoScienceType: project.ecoScienceType || [],
+      projectActivities: project.surveys || [],
+    };
     const validated = BioCollectProjectSchema.parse(formatted);
     res.json(validated);
   } catch (err) {

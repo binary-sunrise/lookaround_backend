@@ -73,6 +73,7 @@ export const BioCollectProjectSchema = z.object({
   hub: z.string().nullable().optional(),
   keywords: z.array(z.string()).nullable().optional().default([]),
   tags: z.array(z.string()).nullable().optional().default([]),
+  links: z.array(z.any()).nullable().optional().default([]),
   scienceType: z.array(z.string()).nullable().optional().default([]),
   ecoScienceType: z.array(z.string()).nullable().optional().default([]),
 }).passthrough();
