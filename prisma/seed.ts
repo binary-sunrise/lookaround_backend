@@ -377,6 +377,140 @@ export async function main() {
     });
   }
 
+  // 5. Seed B-Liffe Domain Entities
+  console.log('[Seed] Seeding B-Liffe domain data...');
+
+  await prisma.userProfile.upsert({
+    where: { email: 'veena@field.b-liffe.org' },
+    update: {
+      fullName: 'Veena V',
+      displayName: 'Veena',
+      bio: 'Biodiversity enthusiast & field observer documenting flora, fauna, and local ecosystems.',
+      avatarType: 'preset',
+      avatarPresetId: 'user',
+    },
+    create: {
+      id: 'profile-demo-veena',
+      fullName: 'Veena V',
+      displayName: 'Veena',
+      email: 'veena@field.b-liffe.org',
+      bio: 'Biodiversity enthusiast & field observer documenting flora, fauna, and local ecosystems.',
+      avatarType: 'preset',
+      avatarPresetId: 'user',
+    },
+  });
+
+  const defaultProject = await prisma.bLiffeProject.upsert({
+    where: { id: 'proj-tvm-biodiversity-2026' },
+    update: {
+      name: 'Thiruvananthapuram City Biodiversity Register',
+      description: 'Comprehensive municipal ward-level documentation of urban flora, fauna, and local ecosystems.',
+      organization: 'Kerala State Biodiversity Board',
+      targetRegion: 'Thiruvananthapuram Municipal Corporation',
+      status: 'active',
+    },
+    create: {
+      id: 'proj-tvm-biodiversity-2026',
+      name: 'Thiruvananthapuram City Biodiversity Register',
+      description: 'Comprehensive municipal ward-level documentation of urban flora, fauna, and local ecosystems.',
+      organization: 'Kerala State Biodiversity Board',
+      targetRegion: 'Thiruvananthapuram Municipal Corporation',
+      status: 'active',
+      syncStatus: 'synced',
+    },
+  });
+
+  const defaultWard = await prisma.bLiffeWard.upsert({
+    where: { id: 'TVM-WARD-014' },
+    update: {
+      wardNumber: '14',
+      wardName: 'Palayam',
+      localBodyName: 'Thiruvananthapuram Municipal Corporation',
+      district: 'Thiruvananthapuram',
+      state: 'Kerala',
+      keyLandmarks: 'University Stadium, Public Library, Secretariat',
+    },
+    create: {
+      id: 'TVM-WARD-014',
+      projectId: defaultProject.id,
+      wardNumber: '14',
+      wardName: 'Palayam',
+      localBodyName: 'Thiruvananthapuram Municipal Corporation',
+      district: 'Thiruvananthapuram',
+      state: 'Kerala',
+      keyLandmarks: 'University Stadium, Public Library, Secretariat',
+      syncStatus: 'synced',
+    },
+  });
+
+  const defaultSurvey = await prisma.bLiffeSurvey.upsert({
+    where: { id: 'survey-tvm-urban-001' },
+    update: {
+      leadObserver: 'Veena V',
+      teamMembers: ['Veena V', 'Anand M'],
+      surveyMethod: 'Opportunistic Encounter',
+      habitatType: 'Urban Park / Garden',
+      targetGroup: 'All Biodiversity',
+    },
+    create: {
+      id: 'survey-tvm-urban-001',
+      projectId: defaultProject.id,
+      wardId: defaultWard.id,
+      leadObserver: 'Veena V',
+      teamMembers: ['Veena V', 'Anand M'],
+      surveyMethod: 'Opportunistic Encounter',
+      habitatType: 'Urban Park / Garden',
+      targetGroup: 'All Biodiversity',
+      startTime: '2026-10-30T07:30:00.000Z',
+      weatherNotes: 'Clear sky, pleasant morning breeze, 27°C',
+      syncStatus: 'synced',
+    },
+  });
+
+  await prisma.bLiffeObservation.upsert({
+    where: { id: 'obs-birdwing-001' },
+    update: {
+      speciesName: 'Southern Birdwing',
+      scientificName: 'Troides minos',
+      localName: 'ഗരുഡശലഭം',
+      speciesGroup: 'Insects / Butterflies',
+      notes: 'State butterfly of Kerala observed nectaring on Pagoda flowers near the Museum garden.',
+      tags: ['state-butterfly', 'canopy-dwelling', 'pollinator'],
+    },
+    create: {
+      id: 'obs-birdwing-001',
+      projectId: defaultProject.id,
+      projectIds: [defaultProject.id],
+      wardId: defaultWard.id,
+      wardName: 'Ward 14 – Palayam',
+      surveyId: defaultSurvey.id,
+      speciesName: 'Southern Birdwing',
+      scientificName: 'Troides minos',
+      localName: 'ഗരുഡശലഭം',
+      speciesGroup: 'Insects / Butterflies',
+      identificationStatus: 'Identified',
+      organismStatus: 'Wild',
+      locationVisibility: 'Open',
+      basis_of_record: 'HumanObservation',
+      tags: ['state-butterfly', 'canopy-dwelling', 'pollinator'],
+      notes: 'State butterfly of Kerala observed nectaring on Pagoda flowers near the Museum garden.',
+      individualCount: 1,
+      lifeStage: 'Adult',
+      microHabitat: 'Tree Canopy',
+      hasTraditionalKnowledge: 'No',
+      latitude: 8.4982,
+      longitude: 76.9534,
+      accuracyMeters: 4.0,
+      location_source: 'GPS',
+      observationAt: '2026-10-30T08:15:00.000Z',
+      recordedAt: '2026-10-30T08:15:00.000Z',
+      photos: ['https://images.unsplash.com/photo-1544979590-37e9b47eb705'],
+      verificationStatus: 'Validated',
+      verifiedBy: 'KFRI Entomologist',
+      syncStatus: 'synced',
+    },
+  });
+
   console.log('✅ Database seeding finished successfully.');
 }
 

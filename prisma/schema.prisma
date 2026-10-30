@@ -131,8 +131,145 @@ model User {
 
   sessions      Session[]
   accounts      Account[]
+  profile       UserProfile?
 
   @@map("users")
+}
+
+model UserProfile {
+  id              String   @id @default(uuid())
+  userId          String?  @unique
+  user            User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName        String
+  displayName     String
+  email           String   @unique
+  bio             String   @default("")
+  avatarType      String   @default("preset")
+  avatarPresetId  String   @default("user")
+  avatarCustomUrl String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("user_profiles")
+}
+
+model BLiffeProject {
+  id           String              @id @default(uuid())
+  name         String
+  description  String?             @default("")
+  startDate    String?
+  status       String              @default("active")
+  organization String?             @default("")
+  targetRegion String?             @default("")
+  syncStatus   String              @default("synced")
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  wards        BLiffeWard[]
+  surveys      BLiffeSurvey[]
+  observations BLiffeObservation[]
+
+  @@map("bliffe_projects")
+}
+
+model BLiffeWard {
+  id            String              @id @default(uuid())
+  projectId     String
+  wardNumber    String
+  wardName      String
+  localBodyName String?             @default("")
+  district      String?             @default("")
+  state         String?             @default("")
+  keyLandmarks  String?             @default("")
+  syncStatus    String              @default("synced")
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  project       BLiffeProject       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  surveys       BLiffeSurvey[]
+  observations  BLiffeObservation[]
+
+  @@index([projectId])
+  @@map("bliffe_wards")
+}
+
+model BLiffeSurvey {
+  id           String              @id @default(uuid())
+  projectId    String
+  wardId       String
+  leadObserver String
+  teamMembers  String[]            @default([])
+  surveyMethod String?             @default("Opportunistic Encounter")
+  habitatType  String?             @default("Urban Park / Garden")
+  targetGroup  String?             @default("All Biodiversity")
+  startTime    String
+  endTime      String?
+  weatherNotes String?             @default("")
+  syncStatus   String              @default("synced")
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  project      BLiffeProject       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  ward         BLiffeWard          @relation(fields: [wardId], references: [id], onDelete: Cascade)
+  observations BLiffeObservation[]
+
+  @@index([projectId])
+  @@index([wardId])
+  @@map("bliffe_surveys")
+}
+
+model BLiffeObservation {
+  id                              String         @id @default(uuid())
+  surveyId                        String?
+  wardId                          String?
+  wardName                        String?
+  projectId                       String?
+  projectIds                      String[]       @default([])
+  speciesName                     String
+  scientificName                  String?        @default("")
+  localName                       String?        @default("")
+  speciesGroup                    String?        @default("")
+  speciesGroups                   String?        @default("")
+  otherSpeciesGroup               String?        @default("")
+  identificationStatus            String?        @default("Identified")
+  organismStatus                  String?        @default("Wild")
+  locationVisibility              String?        @default("Open")
+  basis_of_record                 String         @default("HumanObservation")
+  tags                            String[]       @default([])
+  notes                           String         @default("")
+  individualCount                 Int            @default(1)
+  lifeStage                       String?        @default("")
+  microHabitat                    String?        @default("")
+  otherMicroHabitat               String?        @default("")
+  hasTraditionalKnowledge         String?        @default("No")
+  traditionalKnowledgeSource      String?        @default("")
+  otherTraditionalKnowledgeSource String?        @default("")
+  gps_latitude                    Float?
+  gps_longitude                   Float?
+  latitude                        Float?
+  longitude                       Float?
+  location_source                 String?        @default("GPS")
+  accuracyMeters                  Float?
+  observationAt                   String
+  recordedAt                      String
+  photos                          String[]       @default([])
+  verificationStatus              String?        @default("Unreviewed")
+  verifiedBy                      String?        @default("")
+  verificationNotes               String?        @default("")
+  syncStatus                      String         @default("synced")
+  userId                          String?
+  createdAt                       DateTime       @default(now())
+  updatedAt                       DateTime       @updatedAt
+
+  project                         BLiffeProject? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  ward                            BLiffeWard?    @relation(fields: [wardId], references: [id], onDelete: SetNull)
+  survey                          BLiffeSurvey?  @relation(fields: [surveyId], references: [id], onDelete: SetNull)
+
+  @@index([projectId])
+  @@index([wardId])
+  @@index([surveyId])
+  @@index([userId])
+  @@map("bliffe_observations")
 }
 
 model Session {

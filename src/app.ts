@@ -5,10 +5,18 @@ import { toNodeHandler } from 'better-auth/node';
 import { auth } from './auth';
 import { extractAuthSession } from './middleware/auth';
 import { errorHandler } from './middleware/errorHandler';
-import hubRouter from './routes/hub';
-import projectRouter from './routes/project';
-import surveyRouter from './routes/survey';
-import bioactivityRouter from './routes/bioactivity';
+
+// B-Liffe routes
+import apiRouter, {
+  authRouter,
+  profileRouter,
+  projectsRouter,
+  wardsRouter,
+  surveysRouter,
+  observationsRouter,
+  syncRouter,
+  exportRouter,
+} from './routes';
 
 dotenv.config();
 
@@ -37,12 +45,12 @@ export function createApp() {
         // Allow requests with no origin (e.g. mobile apps, curl, Postman, server-to-server)
         if (!origin) return callback(null, true);
 
-        // Allow any origin if explicitly enabled or '*' configured (reflects origin for credentials)
+        // Allow any origin if explicitly enabled or '*' configured
         if (process.env.CORS_ALLOW_ALL === 'true' || allowedOrigins.includes('*')) {
           return callback(null, true);
         }
 
-        // Allow all Vercel production and preview deployments (*.vercel.app)
+        // Allow all Vercel deployments (*.vercel.app)
         if (origin.endsWith('.vercel.app')) {
           return callback(null, true);
         }
@@ -65,39 +73,97 @@ export function createApp() {
     })
   );
 
-  // Health check endpoint for cloud platform probes (Render, Fly.io, Koyeb)
+  // Health check endpoint for cloud probes
   app.get('/health', (_req, res) => {
     res.status(200).json({
       status: 'ok',
-      service: 'lookaround_backend',
+      service: 'b-liffe-backend',
+      application: 'B-Liffe Biodiversity Field Data API',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
     });
   });
 
-  // Root welcoming endpoint
+  // Root welcoming endpoint with full API discovery map
   app.get('/', (_req, res) => {
     res.status(200).json({
-      name: 'LookAround Backend API',
+      name: 'B-Liffe Biodiversity Field Data API',
       status: 'online',
-      version: '1.0.0',
+      version: '2.0.0',
       health: '/health',
-      docs: '/ws/hub/pwaList',
+      endpoints: {
+        auth: {
+          register: 'POST /api/auth/register',
+          login: 'POST /api/auth/login',
+          logout: 'POST /api/auth/logout',
+          me: 'GET /api/auth/me',
+        },
+        profile: {
+          get: 'GET /api/profile (or /api/v1/profile)',
+          update: 'PUT /api/profile (or /api/v1/profile)',
+        },
+        projects: {
+          list: 'GET /api/projects',
+          create: 'POST /api/projects',
+          get: 'GET /api/projects/:id',
+          update: 'PUT /api/projects/:id',
+          delete: 'DELETE /api/projects/:id',
+          wards: 'GET /api/projects/:projectId/wards',
+        },
+        wards: {
+          identify: 'POST /api/wards/identify (GPS spatial point-matching)',
+          list: 'GET /api/wards',
+          create: 'POST /api/wards',
+          get: 'GET /api/wards/:id',
+          update: 'PUT /api/wards/:id',
+          delete: 'DELETE /api/wards/:id',
+        },
+        surveys: {
+          list: 'GET /api/surveys',
+          create: 'POST /api/surveys',
+          get: 'GET /api/surveys/:id',
+          update: 'PUT /api/surveys/:id',
+          delete: 'DELETE /api/surveys/:id',
+        },
+        observations: {
+          list: 'GET /api/observations',
+          create: 'POST /api/observations',
+          get: 'GET /api/observations/:id',
+          update: 'PUT /api/observations/:id',
+          delete: 'DELETE /api/observations/:id',
+          batch: 'POST /api/observations/batch',
+        },
+        sync: {
+          batch: 'POST /api/sync',
+          status: 'GET /api/sync/status',
+        },
+        export: {
+          darwinCore: 'GET /api/export/dwc',
+        },
+      },
     });
   });
 
-  // Mount Better Auth router on /api/auth/*splat
-  app.all('/api/auth/*splat', toNodeHandler(auth));
-
-  // Express body parsers and session extraction for API routes
-  app.use(express.json());
+  // Express body parsers (50mb limit supports base64 field photos)
+  app.use(express.json({ limit: '50mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '50mb' }));
   app.use(extractAuthSession);
 
-  // Mount API Contract routes
-  app.use('/ws/hub', hubRouter);
-  app.use('/ws/project', projectRouter);
-  app.use('/ws/survey', surveyRouter);
-  app.use('/ws/bioactivity', bioactivityRouter);
+  // Mount B-Liffe Auth & Profile routes (both /auth and /api/auth supported)
+  app.use('/auth', authRouter);
+  app.use('/api/auth', authRouter);
+  app.use('/api/v1/profile', profileRouter);
+  app.use('/api/profile', profileRouter);
+
+  // Mount Better Auth router on /api/auth/*splat for social / oauth flows
+  app.all('/api/auth/*splat', toNodeHandler(auth));
+
+  // Mount B-Liffe Domain API Routes
+  app.use('/api', apiRouter);
+
+  // Hierarchical route aliases matching B-Liffe frontend navigation URLs
+  app.use('/api/projects/:projectId/wards/:wardId/surveys', surveysRouter);
+  app.use('/api/projects/:projectId/wards', wardsRouter);
 
   // Catch-all 404 for unknown endpoints
   app.use((_req, res) => {

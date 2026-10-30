@@ -1,0 +1,808 @@
+{
+  "info": {
+    "_postman_id": "b-liffe-api-collection-v2",
+    "name": "B-Liffe Biodiversity Field Data API",
+    "description": "Production Postman Collection for B-Liffe Backend API, covering Auth, Profile, Projects, GIS Wards, Field Surveys, Darwin Core Observations, Offline Dexie Sync, and DwC Exports.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "projectId",
+      "value": "proj-tvm-biodiversity-2026",
+      "type": "string"
+    },
+    {
+      "key": "wardId",
+      "value": "TVM-WARD-014",
+      "type": "string"
+    },
+    {
+      "key": "surveyId",
+      "value": "survey-tvm-urban-001",
+      "type": "string"
+    },
+    {
+      "key": "observationId",
+      "value": "obs-birdwing-001",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Service Discovery & Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Verifies that the backend server and its dependencies are running."
+          }
+        },
+        {
+          "name": "API Discovery Map",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            },
+            "description": "Returns welcoming metadata and a complete directory map of available B-Liffe endpoints."
+          }
+        }
+      ]
+    },
+    {
+      "name": "02. Authentication",
+      "item": [
+        {
+          "name": "Register Researcher Account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.token) {",
+                  "        pm.collectionVariables.set('token', json.token);",
+                  "        console.log('Saved auth token to collection variables.');",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Dr. Jane Goodall\",\n  \"email\": \"jane.goodall@field.b-liffe.org\",\n  \"password\": \"securePassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Registers a new researcher user and generates their UserProfile along with an active Bearer session token."
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.token) {",
+                  "        pm.collectionVariables.set('token', json.token);",
+                  "        console.log('Saved auth token to collection variables.');",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"jane.goodall@field.b-liffe.org\",\n  \"password\": \"securePassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Authenticates researcher credentials and issues a session token."
+          }
+        },
+        {
+          "name": "Get Current Session Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            },
+            "description": "Returns the authenticated researcher's profile."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "logout"]
+            },
+            "description": "Invalidates the session token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "03. Researcher Profile",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "profile"]
+            },
+            "description": "Retrieves the user profile matching frontend `UserProfile` contract."
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Veena V\",\n  \"displayName\": \"Veena\",\n  \"bio\": \"Field researcher documenting Western Ghats flora, urban pollinators, and ecological networks.\",\n  \"avatarType\": \"preset\",\n  \"avatarPresetId\": \"butterfly\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "profile"]
+            },
+            "description": "Updates profile fields with `ProfileUpdateInput` payload."
+          }
+        }
+      ]
+    },
+    {
+      "name": "04. Projects",
+      "item": [
+        {
+          "name": "List All Projects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects?status=active",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists all projects with attached observation, ward, and survey counts."
+          }
+        },
+        {
+          "name": "Create Project",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.id) {",
+                  "        pm.collectionVariables.set('projectId', json.id);",
+                  "        console.log('Saved projectId:', json.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kerala Forest Research Institute - Wetland Biodiversity Study\",\n  \"description\": \"Comprehensive documentation of riparian and wetland fauna in central and southern Kerala.\",\n  \"organization\": \"Kerala Forest Research Institute (KFRI)\",\n  \"targetRegion\": \"Thiruvananthapuram & Thrissur Districts\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/projects",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects"]
+            },
+            "description": "Creates a new Project entity adhering to B-Liffe data contract."
+          }
+        },
+        {
+          "name": "Get Project by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}"]
+            },
+            "description": "Retrieves project details including associated wards and surveys."
+          }
+        },
+        {
+          "name": "Update Project",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated survey campaign targets and seasonal guidelines.\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}"]
+            },
+            "description": "Updates project metadata fields."
+          }
+        },
+        {
+          "name": "Get Wards for Project",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}/wards",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}", "wards"]
+            },
+            "description": "Lists wards specifically belonging to this project."
+          }
+        },
+        {
+          "name": "Delete Project",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/projects/{{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "projects", "{{projectId}}"]
+            },
+            "description": "Deletes the project."
+          }
+        }
+      ]
+    },
+    {
+      "name": "05. Wards & GIS Boundary Matching",
+      "item": [
+        {
+          "name": "Auto GIS Ward Identification from GPS (Palayam)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitude\": 8.4982,\n  \"longitude\": 76.9534\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/wards/identify",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "wards", "identify"]
+            },
+            "description": "Submits coordinates to the spatial point-in-boundary engine matching against Thiruvananthapuram Municipal Corporation wards (Palayam Ward 14)."
+          }
+        },
+        {
+          "name": "Auto GIS Ward Identification (Pattom)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitude\": 8.5241,\n  \"longitude\": 76.9452\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/wards/identify",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "wards", "identify"]
+            },
+            "description": "Identifies Pattom (Ward 26) from coordinates."
+          }
+        },
+        {
+          "name": "List Wards",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/wards?projectId={{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "wards"],
+              "query": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}"
+                }
+              ]
+            },
+            "description": "Lists all administrative wards."
+          }
+        },
+        {
+          "name": "Create Administrative Ward",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.id) {",
+                  "        pm.collectionVariables.set('wardId', json.id);",
+                  "        console.log('Saved wardId:', json.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"wardNumber\": \"26\",\n  \"wardName\": \"Pattom\",\n  \"localBodyName\": \"Thiruvananthapuram Municipal Corporation\",\n  \"district\": \"Thiruvananthapuram\",\n  \"state\": \"Kerala\",\n  \"keyLandmarks\": \"Pattom Junction, Kendriya Vidyalaya, LIC Building\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/wards",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "wards"]
+            },
+            "description": "Creates an administrative municipal ward."
+          }
+        },
+        {
+          "name": "Get Ward by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/wards/{{wardId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "wards", "{{wardId}}"]
+            },
+            "description": "Retrieves ward details."
+          }
+        },
+        {
+          "name": "Update Ward",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"keyLandmarks\": \"Pattom Junction, Kendriya Vidyalaya, St. Marys School\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/wards/{{wardId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "wards", "{{wardId}}"]
+            },
+            "description": "Updates ward details."
+          }
+        }
+      ]
+    },
+    {
+      "name": "06. Field Surveys",
+      "item": [
+        {
+          "name": "Create Survey Visit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.id) {",
+                  "        pm.collectionVariables.set('surveyId', json.id);",
+                  "        console.log('Saved surveyId:', json.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"wardId\": \"{{wardId}}\",\n  \"leadObserver\": \"Veena V\",\n  \"teamMembers\": [\"Veena V\", \"Dr. Jane Goodall\", \"Anand M\"],\n  \"surveyMethod\": \"Line Transect\",\n  \"habitatType\": \"Urban Park / Garden\",\n  \"targetGroup\": \"All Biodiversity\",\n  \"startTime\": \"2026-10-30T07:30:00.000Z\",\n  \"weatherNotes\": \"Clear sky, calm morning breeze, 27°C\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/surveys",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "surveys"]
+            },
+            "description": "Creates a field survey sampling outing."
+          }
+        },
+        {
+          "name": "List Surveys",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/surveys?projectId={{projectId}}&wardId={{wardId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "surveys"],
+              "query": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}"
+                },
+                {
+                  "key": "wardId",
+                  "value": "{{wardId}}"
+                }
+              ]
+            },
+            "description": "Lists surveys filtered by project and ward."
+          }
+        },
+        {
+          "name": "Get Survey by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/surveys/{{surveyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "surveys", "{{surveyId}}"]
+            },
+            "description": "Retrieves survey details including count of observations recorded."
+          }
+        },
+        {
+          "name": "Update Survey",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"weatherNotes\": \"Updated: light cloud cover observed after 09:00 AM.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/surveys/{{surveyId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "surveys", "{{surveyId}}"]
+            },
+            "description": "Updates survey observations notes."
+          }
+        }
+      ]
+    },
+    {
+      "name": "07. Observations (Darwin Core Occurrences)",
+      "item": [
+        {
+          "name": "Record Species Observation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.id) {",
+                  "        pm.collectionVariables.set('observationId', json.id);",
+                  "        console.log('Saved observationId:', json.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"wardId\": \"{{wardId}}\",\n  \"wardName\": \"Ward 14 – Palayam\",\n  \"surveyId\": \"{{surveyId}}\",\n  \"speciesName\": \"Southern Birdwing\",\n  \"scientificName\": \"Troides minos\",\n  \"localName\": \"ഗരുഡശലഭം\",\n  \"speciesGroup\": \"Insects / Butterflies\",\n  \"identificationStatus\": \"Identified\",\n  \"organismStatus\": \"Wild\",\n  \"locationVisibility\": \"Open\",\n  \"basis_of_record\": \"HumanObservation\",\n  \"tags\": [\"state-butterfly\", \"pollinator\", \"canopy-dwelling\"],\n  \"notes\": \"State butterfly of Kerala observed nectaring on Pagoda flower in the afternoon.\",\n  \"individualCount\": 2,\n  \"lifeStage\": \"Adult\",\n  \"microHabitat\": \"Tree Canopy\",\n  \"hasTraditionalKnowledge\": \"Yes\",\n  \"traditionalKnowledgeSource\": \"Elder / knowledgeable local resident\",\n  \"latitude\": 8.4982,\n  \"longitude\": 76.9534,\n  \"accuracyMeters\": 4.5,\n  \"location_source\": \"GPS\",\n  \"observationAt\": \"2026-10-30T08:15:00.000Z\",\n  \"recordedAt\": \"2026-10-30T08:15:00.000Z\",\n  \"photos\": [\"https://images.unsplash.com/photo-1544979590-37e9b47eb705\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/observations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "observations"]
+            },
+            "description": "Records an individual species sighting with taxonomy, DwC terms, GPS coordinates, ecology, and photo URLs."
+          }
+        },
+        {
+          "name": "List & Filter Observations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/observations?tag=pollinator&search=Birdwing",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "observations"],
+              "query": [
+                {
+                  "key": "tag",
+                  "value": "pollinator"
+                },
+                {
+                  "key": "search",
+                  "value": "Birdwing"
+                },
+                {
+                  "key": "status",
+                  "value": "Identified",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Filters observations based on species name, tag, identification status, or project."
+          }
+        },
+        {
+          "name": "Get Observation by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/observations/{{observationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "observations", "{{observationId}}"]
+            },
+            "description": "Retrieves observation details."
+          }
+        },
+        {
+          "name": "Update Verification Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verificationStatus\": \"Validated\",\n  \"verifiedBy\": \"Dr. Jane Goodall\",\n  \"verificationNotes\": \"Species identification validated from distinctive wing pattern.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/observations/{{observationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "observations", "{{observationId}}"]
+            },
+            "description": "Updates observation verification review status."
+          }
+        },
+        {
+          "name": "Batch Upsert Observations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"speciesName\": \"Malabar Gliding Frog\",\n    \"scientificName\": \"Rhacophorus malabaricus\",\n    \"localName\": \"മലബാർ പച്ചത്തവള\",\n    \"basis_of_record\": \"HumanObservation\",\n    \"notes\": \"Perched on Arum leaf after monsoon drizzle.\",\n    \"latitude\": 8.5241,\n    \"longitude\": 76.9452,\n    \"observationAt\": \"2026-10-30T09:00:00.000Z\",\n    \"recordedAt\": \"2026-10-30T09:00:00.000Z\"\n  }\n]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/observations/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "observations", "batch"]
+            },
+            "description": "Batch upserts multiple observation records."
+          }
+        }
+      ]
+    },
+    {
+      "name": "08. Offline Dexie Sync",
+      "item": [
+        {
+          "name": "Batch Sync Client Database",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projects\": [\n    {\n      \"name\": \"Urban Sacred Groves (Kavu) Inventory\",\n      \"status\": \"active\"\n    }\n  ],\n  \"wards\": [],\n  \"surveys\": [],\n  \"observations\": [\n    {\n      \"speciesName\": \"Indian Peafowl\",\n      \"scientificName\": \"Pavo cristatus\",\n      \"basis_of_record\": \"HumanObservation\",\n      \"notes\": \"Adult male observed near forest edge.\",\n      \"observationAt\": \"2026-10-30T08:00:00.000Z\",\n      \"recordedAt\": \"2026-10-30T08:00:00.000Z\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/sync",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "sync"]
+            },
+            "description": "Receives local IndexedDB tables from mobile devices and upserts them to PostgreSQL in one batch."
+          }
+        },
+        {
+          "name": "Get Server Sync Storage Counts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sync/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "sync", "status"]
+            },
+            "description": "Returns counts of synced records stored on the server."
+          }
+        }
+      ]
+    },
+    {
+      "name": "09. Darwin Core Export",
+      "item": [
+        {
+          "name": "Export Darwin Core Occurrence JSON",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/export/dwc?projectId={{projectId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "export", "dwc"],
+              "query": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}"
+                }
+              ]
+            },
+            "description": "Exports observation occurrences structured in the international Darwin Core (DwC) standard format, including dynamicProperties for custom metadata."
+          }
+        }
+      ]
+    }
+  ]
+}
+
