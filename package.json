@@ -15,6 +15,7 @@
     "db:migrate:dev": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "prisma migrate reset --force",
+    "db:truncate": "tsx prisma/truncate.ts",
     "db:studio": "prisma studio",
     "prisma:generate": "prisma generate"
   },

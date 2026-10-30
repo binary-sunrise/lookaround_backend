@@ -68,6 +68,7 @@ export type AvatarType = z.infer<typeof AvatarTypeSchema>;
 export const UserProfileSchema = z.object({
   id: z.string(),
   fullName: z.string().min(1),
+  name: z.string().optional(),
   displayName: z.string(),
   email: z.string().email(),
   bio: z.string().default(''),

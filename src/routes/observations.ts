@@ -6,8 +6,117 @@ import {
   UpdateObservationSchema,
   Observation,
 } from '../schemas/bliffe';
+import { TVM_WARDS } from '../services/wardService';
 
 const router = Router();
+
+async function ensureRelationalEntities(input: {
+  projectId?: string | null;
+  wardId?: string | null;
+  wardName?: string | null;
+  surveyId?: string | null;
+  userId?: string | null;
+  observationAt?: string | null;
+}) {
+  let effectiveProjectId = input.projectId || null;
+  if (effectiveProjectId) {
+    const existingProject = await prisma.bLiffeProject.findUnique({
+      where: { id: effectiveProjectId },
+    });
+    if (!existingProject) {
+      await prisma.bLiffeProject.create({
+        data: {
+          id: effectiveProjectId,
+          name: 'Biodiversity Field Project',
+          targetRegion: 'Thiruvananthapuram',
+          status: 'active',
+          syncStatus: 'synced',
+        },
+      });
+    }
+  }
+
+  let effectiveWardId = input.wardId || null;
+  if (effectiveWardId) {
+    const existingWard = await prisma.bLiffeWard.findUnique({
+      where: { id: effectiveWardId },
+    });
+    if (!existingWard) {
+      let projectForWard = effectiveProjectId;
+      if (!projectForWard) {
+        let defaultProj = await prisma.bLiffeProject.findFirst();
+        if (!defaultProj) {
+          defaultProj = await prisma.bLiffeProject.create({
+            data: {
+              id: 'proj-tvm-biodiversity-2026',
+              name: 'Thiruvananthapuram City Biodiversity Register',
+              organization: 'Kerala State Biodiversity Board',
+              targetRegion: 'Thiruvananthapuram Municipal Corporation',
+              status: 'active',
+              syncStatus: 'synced',
+            },
+          });
+        }
+        projectForWard = defaultProj.id;
+        effectiveProjectId = defaultProj.id;
+      }
+
+      const matchedRefWard = TVM_WARDS.find((w) => w.wardId === effectiveWardId);
+      await prisma.bLiffeWard.create({
+        data: {
+          id: effectiveWardId,
+          projectId: projectForWard,
+          wardNumber: matchedRefWard?.wardNumber || input.wardName?.match(/\d+/)?.[0] || '14',
+          wardName: matchedRefWard?.wardName || input.wardName || 'Palayam',
+          localBodyName: matchedRefWard?.localBodyName || 'Thiruvananthapuram Municipal Corporation',
+          district: 'Thiruvananthapuram',
+          state: 'Kerala',
+          syncStatus: 'synced',
+        },
+      });
+    }
+  }
+
+  let effectiveSurveyId = input.surveyId || null;
+  if (effectiveSurveyId) {
+    const existingSurvey = await prisma.bLiffeSurvey.findUnique({
+      where: { id: effectiveSurveyId },
+    });
+    if (!existingSurvey) {
+      if (effectiveProjectId && effectiveWardId) {
+        await prisma.bLiffeSurvey.create({
+          data: {
+            id: effectiveSurveyId,
+            projectId: effectiveProjectId,
+            wardId: effectiveWardId,
+            leadObserver: 'Field Researcher',
+            startTime: input.observationAt || new Date().toISOString(),
+            syncStatus: 'synced',
+          },
+        });
+      } else {
+        effectiveSurveyId = null;
+      }
+    }
+  }
+
+  let effectiveUserId = input.userId || null;
+  if (effectiveUserId) {
+    const existingUser = await prisma.user.findUnique({
+      where: { id: effectiveUserId },
+    });
+    if (!existingUser) {
+      effectiveUserId = null;
+    }
+  }
+
+  return {
+    projectId: effectiveProjectId,
+    wardId: effectiveWardId,
+    surveyId: effectiveSurveyId,
+    userId: effectiveUserId,
+  };
+}
 
 export function mapPrismaToObservation(obs: any): Observation {
   return {
@@ -132,16 +241,25 @@ router.post('/', async (req, res, next) => {
   try {
     const input = CreateObservationSchema.parse(req.body);
     const id = input.id || crypto.randomUUID();
-    const userId = (req as any).userId || input.userId || null;
+    const rawUserId = (req as any).userId || input.userId || null;
+
+    const { projectId, wardId, surveyId, userId } = await ensureRelationalEntities({
+      projectId: input.projectId,
+      wardId: input.wardId,
+      wardName: input.wardName,
+      surveyId: input.surveyId,
+      userId: rawUserId,
+      observationAt: input.observationAt,
+    });
 
     const created = await prisma.bLiffeObservation.create({
       data: {
         id,
-        surveyId: input.surveyId || null,
-        wardId: input.wardId || null,
+        surveyId,
+        wardId,
         wardName: input.wardName || null,
-        projectId: input.projectId || null,
-        projectIds: input.projectIds || (input.projectId ? [input.projectId] : []),
+        projectId,
+        projectIds: input.projectIds || (projectId ? [projectId] : []),
         speciesName: input.speciesName.trim(),
         scientificName: input.scientificName?.trim() || '',
         localName: input.localName?.trim() || '',
@@ -295,15 +413,24 @@ router.post('/batch', async (req, res, next) => {
     for (const raw of items) {
       const parsed = CreateObservationSchema.parse(raw);
       const id = parsed.id || crypto.randomUUID();
+      const { projectId, wardId, surveyId } = await ensureRelationalEntities({
+        projectId: parsed.projectId,
+        wardId: parsed.wardId,
+        wardName: parsed.wardName,
+        surveyId: parsed.surveyId,
+        userId: parsed.userId,
+        observationAt: parsed.observationAt,
+      });
+
       await prisma.bLiffeObservation.upsert({
         where: { id },
         create: {
           id,
-          surveyId: parsed.surveyId || null,
-          wardId: parsed.wardId || null,
+          surveyId,
+          wardId,
           wardName: parsed.wardName || null,
-          projectId: parsed.projectId || null,
-          projectIds: parsed.projectIds || (parsed.projectId ? [parsed.projectId] : []),
+          projectId,
+          projectIds: parsed.projectIds || (projectId ? [projectId] : []),
           speciesName: parsed.speciesName.trim(),
           scientificName: parsed.scientificName?.trim() || '',
           localName: parsed.localName?.trim() || '',

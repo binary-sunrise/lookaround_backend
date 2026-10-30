@@ -82,6 +82,7 @@ router.post('/register', async (req, res, next) => {
     const userProfile: UserProfile = {
       id: profile.id,
       fullName: profile.fullName,
+      name: profile.fullName,
       displayName: profile.displayName,
       email: profile.email,
       bio: profile.bio,
@@ -159,6 +160,7 @@ router.post('/login', async (req, res, next) => {
     const userProfile: UserProfile = {
       id: profile.id,
       fullName: profile.fullName,
+      name: profile.fullName,
       displayName: profile.displayName,
       email: profile.email,
       bio: profile.bio,

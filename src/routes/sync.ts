@@ -6,6 +6,7 @@ import {
   SyncResponse,
   SyncStatusResponse,
 } from '../schemas/bliffe';
+import { TVM_WARDS } from '../services/wardService';
 
 const router = Router();
 
@@ -111,15 +112,88 @@ router.post('/', async (req, res, next) => {
     // 4. Sync Observations
     for (const o of payload.observations) {
       const id = o.id || crypto.randomUUID();
+
+      let effectiveProjectId = o.projectId || null;
+      if (effectiveProjectId) {
+        const proj = await prisma.bLiffeProject.findUnique({ where: { id: effectiveProjectId } });
+        if (!proj) {
+          await prisma.bLiffeProject.create({
+            data: {
+              id: effectiveProjectId,
+              name: 'Synced Field Project',
+              status: 'active',
+              syncStatus: 'synced',
+            },
+          });
+        }
+      }
+
+      let effectiveWardId = o.wardId || null;
+      if (effectiveWardId) {
+        const ward = await prisma.bLiffeWard.findUnique({ where: { id: effectiveWardId } });
+        if (!ward) {
+          let projectForWard = effectiveProjectId;
+          if (!projectForWard) {
+            let defaultProj = await prisma.bLiffeProject.findFirst();
+            if (!defaultProj) {
+              defaultProj = await prisma.bLiffeProject.create({
+                data: {
+                  id: 'proj-tvm-biodiversity-2026',
+                  name: 'Thiruvananthapuram City Biodiversity Register',
+                  status: 'active',
+                  syncStatus: 'synced',
+                },
+              });
+            }
+            projectForWard = defaultProj.id;
+            effectiveProjectId = defaultProj.id;
+          }
+          const matchedRef = TVM_WARDS.find((w) => w.wardId === effectiveWardId);
+          await prisma.bLiffeWard.create({
+            data: {
+              id: effectiveWardId,
+              projectId: projectForWard,
+              wardNumber: matchedRef?.wardNumber || o.wardName?.match(/\d+/)?.[0] || '14',
+              wardName: matchedRef?.wardName || o.wardName || 'Palayam',
+              localBodyName: matchedRef?.localBodyName || 'Thiruvananthapuram Municipal Corporation',
+              district: 'Thiruvananthapuram',
+              state: 'Kerala',
+              syncStatus: 'synced',
+            },
+          });
+        }
+      }
+
+      let effectiveSurveyId = o.surveyId || null;
+      if (effectiveSurveyId) {
+        const surv = await prisma.bLiffeSurvey.findUnique({ where: { id: effectiveSurveyId } });
+        if (!surv) {
+          if (effectiveProjectId && effectiveWardId) {
+            await prisma.bLiffeSurvey.create({
+              data: {
+                id: effectiveSurveyId,
+                projectId: effectiveProjectId,
+                wardId: effectiveWardId,
+                leadObserver: 'Field Researcher',
+                startTime: o.observationAt || new Date().toISOString(),
+                syncStatus: 'synced',
+              },
+            });
+          } else {
+            effectiveSurveyId = null;
+          }
+        }
+      }
+
       await prisma.bLiffeObservation.upsert({
         where: { id },
         create: {
           id,
-          surveyId: o.surveyId || null,
-          wardId: o.wardId || null,
+          surveyId: effectiveSurveyId,
+          wardId: effectiveWardId,
           wardName: o.wardName || null,
-          projectId: o.projectId || null,
-          projectIds: o.projectIds || (o.projectId ? [o.projectId] : []),
+          projectId: effectiveProjectId,
+          projectIds: o.projectIds || (effectiveProjectId ? [effectiveProjectId] : []),
           speciesName: o.speciesName.trim(),
           scientificName: o.scientificName?.trim() || '',
           localName: o.localName?.trim() || '',
