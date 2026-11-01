@@ -77,8 +77,8 @@ export function createApp() {
   app.get('/health', (_req, res) => {
     res.status(200).json({
       status: 'ok',
-      service: 'b-liffe-backend',
-      application: 'B-Liffe Biodiversity Field Data API',
+      service: process.env.SERVICE_NAME || 'b-liffe-backend',
+      application: process.env.APP_NAME || 'B-Liffe Biodiversity Field Data API',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
     });
@@ -87,9 +87,9 @@ export function createApp() {
   // Root welcoming endpoint with full API discovery map
   app.get('/', (_req, res) => {
     res.status(200).json({
-      name: 'B-Liffe Biodiversity Field Data API',
+      name: process.env.APP_NAME || 'B-Liffe Biodiversity Field Data API',
       status: 'online',
-      version: '2.0.0',
+      version: process.env.APP_VERSION || '2.0.0',
       health: '/health',
       endpoints: {
         auth: {
@@ -144,9 +144,10 @@ export function createApp() {
     });
   });
 
-  // Express body parsers (50mb limit supports base64 field photos)
-  app.use(express.json({ limit: '50mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+  // Express body parsers (configurable limit, defaults to 50mb for base64 field photos)
+  const bodyLimit = process.env.BODY_LIMIT || '50mb';
+  app.use(express.json({ limit: bodyLimit }));
+  app.use(express.urlencoded({ extended: true, limit: bodyLimit }));
   app.use(extractAuthSession);
 
   // Mount B-Liffe Auth & Profile routes (both /auth and /api/auth supported)

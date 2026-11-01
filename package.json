@@ -16,6 +16,7 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "prisma migrate reset --force",
     "db:truncate": "tsx prisma/truncate.ts",
+    "db:check": "tsx scripts/check-db.ts",
     "db:studio": "prisma studio",
     "prisma:generate": "prisma generate"
   },
@@ -27,18 +28,14 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@neondatabase/serverless": "^1.2.0",
-    "@prisma/adapter-neon": "^7.10.0",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
-    "@types/ws": "^8.18.2",
     "better-auth": "^1.7.7",
     "cors": "^2.8.6",
     "dotenv": "^18.0.5",
     "express": "^5.2.1",
     "pg": "^8.23.1",
     "prisma": "^7.10.0",
-    "ws": "^8.22.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {

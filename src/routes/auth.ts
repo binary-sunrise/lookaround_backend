@@ -69,7 +69,8 @@ router.post('/register', async (req, res, next) => {
 
     // Create active session token
     const token = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const sessionDurationMs = (Number(process.env.AUTH_SESSION_EXPIRES_IN_SECONDS) || 7 * 24 * 60 * 60) * 1000;
+    const expiresAt = new Date(Date.now() + sessionDurationMs);
     await prisma.session.create({
       data: {
         id: crypto.randomUUID(),
@@ -147,7 +148,8 @@ router.post('/login', async (req, res, next) => {
 
     // Issue new session token
     const token = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const sessionDurationMs = (Number(process.env.AUTH_SESSION_EXPIRES_IN_SECONDS) || 7 * 24 * 60 * 60) * 1000;
+    const expiresAt = new Date(Date.now() + sessionDurationMs);
     await prisma.session.create({
       data: {
         id: crypto.randomUUID(),

@@ -91,7 +91,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
-    minPasswordLength: 6,
+    minPasswordLength: Number(process.env.AUTH_MIN_PASSWORD_LENGTH) || 6,
   },
   socialProviders,
   user: {
@@ -107,11 +107,11 @@ export const auth = betterAuth({
     },
   },
   session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24, // 1 day
+    expiresIn: Number(process.env.AUTH_SESSION_EXPIRES_IN_SECONDS) || 60 * 60 * 24 * 7, // 7 days
+    updateAge: Number(process.env.AUTH_SESSION_UPDATE_AGE_SECONDS) || 60 * 60 * 24, // 1 day
     cookieCache: {
       enabled: true,
-      maxAge: 5 * 60, // 5 minutes
+      maxAge: Number(process.env.AUTH_COOKIE_CACHE_MAX_AGE_SECONDS) || 5 * 60, // 5 minutes
     },
   },
   advanced: {

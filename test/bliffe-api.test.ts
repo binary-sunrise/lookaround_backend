@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 import crypto from 'node:crypto';
 import { app } from '../src/app';
+import { prisma, pool } from '../src/db/client';
 
 describe('B-Liffe Backend API & Contract Test Suite', { timeout: 60000 }, () => {
   let server: http.Server;
@@ -24,6 +25,10 @@ describe('B-Liffe Backend API & Contract Test Suite', { timeout: 60000 }, () => 
     await new Promise<void>((resolve, reject) => {
       server.close((err) => (err ? reject(err) : resolve()));
     });
+    if (pool) {
+      await pool.end();
+    }
+    await prisma.$disconnect();
   });
 
   // Unique IDs for isolated test execution
